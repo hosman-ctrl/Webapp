@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hosman Reviews - Honest Movie Reviews</title>
+    <title>Latest Movies on Hosman - AI-Powered Movie Discovery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #C73737;
-            --primary-dark: #8B2020;
-            --secondary: #2c3e50;
-            --light: #f8f9fa;
-            --gray: #6c757d;
-            --dark: #343a40;
-            --success: #28a745;
-            --border-radius: 8px;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
+            --primary: #0088cc;
+            --primary-dark: #006699;
+            --dark: #1a1a1a;
+            --darker: #0d0d0d;
+            --light: #f5f5f5;
+            --gray: #8e8e8e;
+            --border: #2a2a2a;
+            --card-bg: #222222;
+            --hover: #333333;
         }
 
         * {
@@ -27,1023 +26,873 @@
         }
 
         body {
-            background-color: #f5f5f5;
-            color: var(--dark);
+            background-color: var(--darker);
+            color: var(--light);
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header Styles */
         header {
-            background-color: white;
-            box-shadow: var(--box-shadow);
+            background-color: var(--dark);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .header-content {
+        .logo-container {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
+            gap: 1rem;
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            object-fit: cover;
+            overflow: hidden;
+            background: #C73737;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
         .logo-text {
-            font-family: 'Brush Script MT', cursive;
-            font-size: 28px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+        }
+
+        .logo-text span {
             color: var(--primary);
-            font-weight: bold;
         }
 
-        .search-bar {
-            flex: 1;
-            max-width: 500px;
-            margin: 0 20px;
-            position: relative;
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
         }
 
-        .search-bar input {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 30px;
-            font-size: 16px;
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .search-bar button {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--primary);
-            color: white;
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-bg);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            width: 300px;
+        }
+
+        .search-container input {
+            background: transparent;
             border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
+            color: var(--light);
+            width: 100%;
+            padding: 0.5rem;
+            outline: none;
+        }
+
+        .search-container button {
+            background: transparent;
+            border: none;
+            color: var(--gray);
             cursor: pointer;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        .telegram-cta {
+            background-color: var(--primary);
             color: white;
-            padding: 60px 0;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .telegram-cta:hover {
+            background-color: var(--primary-dark);
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1925&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            padding: 4rem 2rem;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 3rem;
         }
 
         .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
 
         .hero p {
             font-size: 1.2rem;
             max-width: 700px;
-            margin: 0 auto 25px;
+            margin: 0 auto 2rem;
+            color: var(--gray);
         }
 
-        .cta-button {
-            display: inline-block;
-            background: white;
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--light);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--hover);
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title h2 {
+            font-size: 1.8rem;
+        }
+
+        .view-all {
             color: var(--primary);
-            padding: 12px 30px;
-            border-radius: 30px;
             text-decoration: none;
-            font-weight: bold;
-            transition: var(--transition);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Main Content Layout */
-        .main-content {
+        .cards-container {
             display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 30px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
-        /* Movie Cards */
-        .movie-card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 20px;
-            transition: var(--transition);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .movie-card:hover {
+        .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .movie-poster {
+        .card-img {
             width: 100%;
             height: 300px;
             object-fit: cover;
         }
 
-        .movie-info {
-            padding: 20px;
+        .card-content {
+            padding: 1rem;
         }
 
-        .movie-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 10px;
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .movie-year {
             color: var(--gray);
             font-size: 0.9rem;
-            font-weight: normal;
+            margin-bottom: 1rem;
         }
 
-        .movie-rating {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-
-        .stars {
-            color: #ffc107;
-        }
-
-        .rating-value {
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .movie-overview {
-            margin-bottom: 15px;
-            line-height: 1.5;
+        .card-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
 
-        .movie-genres {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 15px;
-        }
-
-        .genre-tag {
-            background: var(--light);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--gray);
-        }
-
-        .movie-actions {
+        .card-actions {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
         }
 
-        .action-btn {
-            background: none;
+        .card-action {
+            background: transparent;
             border: none;
             color: var(--gray);
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
-            transition: var(--transition);
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            transition: color 0.3s;
         }
 
-        .action-btn:hover {
+        .card-action:hover {
             color: var(--primary);
         }
 
-        /* Sidebar */
-        .sidebar {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 20px;
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-        }
-
-        .sidebar-section {
-            margin-bottom: 25px;
-        }
-
-        .sidebar-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .categories-list {
-            list-style: none;
-        }
-
-        .categories-list li {
-            margin-bottom: 10px;
-        }
-
-        .categories-list a {
-            text-decoration: none;
-            color: var(--dark);
-            display: flex;
-            justify-content: space-between;
-            transition: var(--transition);
-        }
-
-        .categories-list a:hover {
-            color: var(--primary);
-        }
-
-        .categories-list .count {
-            background: var(--light);
-            padding: 2px 8px;
+        .ai-explanation {
+            background-color: var(--card-bg);
             border-radius: 10px;
-            font-size: 0.8rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
         }
 
-        .trending-item {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .trending-item:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .trending-rank {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-
-        .trending-content h4 {
-            font-size: 0.95rem;
-            margin-bottom: 5px;
-        }
-
-        .trending-content .rating {
+        .ai-explanation h3 {
             display: flex;
             align-items: center;
-            gap: 3px;
-            font-size: 0.8rem;
-            color: var(--gray);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
 
-        /* Filter Section */
-        .filters {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-
-        .filter-group {
-            margin-bottom: 15px;
-        }
-
-        .filter-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .filter-options {
+        .telegram-integration {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 3rem;
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            background: var(--light);
-            border: 1px solid #ddd;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .filter-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .filter-btn:hover:not(.active) {
-            background: #e9ecef;
-        }
-
-        /* Stats Section */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            padding: 20px;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 5px;
+        .telegram-integration h2 {
+            margin-bottom: 1rem;
         }
 
-        .stat-label {
+        .telegram-integration p {
+            max-width: 600px;
+            margin-bottom: 2rem;
+            color: var(--gray);
+        }
+
+        footer {
+            background-color: var(--dark);
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            color: var(--light);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        .social-links a[title*="Telegram"]:hover {
+            background-color: #0088cc;
+            color: white;
+        }
+
+        .social-links a[title*="Twitter"]:hover,
+        .social-links a[title*="X"]:hover {
+            background-color: #000000;
+            color: white;
+        }
+
+        .social-links a[title*="Instagram"]:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+        }
+
+        .social-links a[title*="Facebook"]:hover {
+            background-color: #1877f2;
+            color: white;
+        }
+
+        .social-links a[title*="YouTube"]:hover {
+            background-color: #ff0000;
+            color: white;
+        }
+
+        .social-links a[title*="Discord"]:hover {
+            background-color: #5865f2;
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
             color: var(--gray);
             font-size: 0.9rem;
         }
 
-        /* Loading Spinner */
+        .system-status {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
         .loading {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            height: 200px;
         }
 
         .spinner {
             width: 40px;
             height: 40px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: var(--primary);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        /* Footer */
-        footer {
-            background: var(--secondary);
-            color: white;
-            padding: 40px 0 20px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .footer-column h3 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
             left: 0;
-            bottom: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--primary);
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
         }
 
-        .footer-links {
-            list-style: none;
+        .modal-content {
+            background-color: var(--dark);
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            position: relative;
         }
 
-        .footer-links li {
-            margin-bottom: 10px;
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
         }
 
-        .footer-links a {
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: var(--transition);
+        .close-modal:hover {
+            color: var(--light);
         }
 
-        .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .social-links {
+        .movie-detail {
             display: flex;
-            gap: 15px;
-            margin-top: 15px;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .social-links a {
-            color: white;
-            font-size: 1.2rem;
-            transition: var(--transition);
+        .movie-poster {
+            width: 300px;
+            border-radius: 10px;
         }
 
-        .social-links a:hover {
+        .movie-info h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+
+        .movie-overview {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .ai-insights {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-insights h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
             color: var(--primary);
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #bdc3c7;
-            font-size: 0.9rem;
+        .telegram-review {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
         }
 
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar {
-                position: static;
+        .telegram-review h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-results {
+            display: none;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .search-container {
+                width: 200px;
             }
         }
 
         @media (max-width: 768px) {
-            .header-content {
+            header {
                 flex-direction: column;
-                gap: 15px;
+                gap: 1rem;
+                padding: 1rem;
             }
-            
-            .search-bar {
-                max-width: 100%;
-                margin: 10px 0;
+
+            nav ul {
+                gap: 1rem;
             }
-            
-            .nav-links {
+
+            .search-container {
                 width: 100%;
-                justify-content: center;
             }
-            
+
             .hero h1 {
                 font-size: 2rem;
             }
-            
-            .stats {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
 
-        @media (max-width: 576px) {
-            .movie-title {
+            .hero-buttons {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
+                align-items: center;
             }
-            
-            .movie-actions {
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .movie-detail {
                 flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
             }
-            
-            .stats {
-                grid-template-columns: 1fr;
+
+            .movie-poster {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQwIDQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9InNoYWRvdyIgeD0iLTUwJSIgeT0iLTUwJSIgd2lkdGg9IjIwMCUiIGhlaWdodD0iMjAwJSI+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBpbj0iU291cmNlQWxwaGEiIHN0ZGV2aWF0aW9uPSI0Ii8+CiAgICAgIDxmZU9mZnNldCBkeD0iMCIgZHk9IjQiIHJlc3VsdD0ib2Zmc2V0Ymx1ciIvPgogICAgICA8ZmVDb21wb25lbnRUcmFuc2Zlcj4KICAgICAgICA8ZmVGdW5jQSB0eXBlPSJsaW5lYXIiIHNsb3BlPSIwLjUiLz4KICAgICAgPC9mZUNvbXBvbmVudFRyYW5zZmVyPgogICAgICA8ZmVNZXJnZT4KICAgICAgICA8ZmVNZXJnZU5vZGUvPgogICAgICAgIDxmZU1lcmdlTm9kZSBpbj0iU291cmNlR3JhcGhpYyIvPgogICAgICA8L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI2NDAiIGhlaWdodD0iNDgwIiBmaWxsPSIjQzczNzM3Ii8+CiAgCiAgPCEtLSBDaXJjbGUgb3V0bGluZSAtLT4KICA8Y2lyY2xlIGN4PSIzMjAiIGN5PSIyNDAiIHI9IjE2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxMiIgb3BhY2l0eT0iMC45Ii8+CiAgCiAgPCEtLSBJbm5lciBzaGFkb3cgY2lyY2xlIC0tPgogIDxjaXJjbGUgY3g9IjMyMCIgY3k9IjI0MCIgcj0iMTQ4IiBmaWxsPSIjOEIyMDIwIiBvcGFjaXR5PSIwLjYiLz4KICAKICA8IS0tIFRleHQ6IEhvc21hbiAtLT4KICA8dGV4dCB4PSIzMjAiIHk9IjI0MCIgZm9udC1mYW1pbHk9IidCcnVzaCBTY3JpcHQgTVQnLCBjdXJzaXZlLCBzZXJpZiIgZm9udC1zaXplPSIxMTAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsdGVyPSJ1cmwoI3NoYWRvdykiIGZvbnQtc3R5bGU9Iml0YWxpYyI+CiAgICBIb3NtYW4KICA8L3RleHQ+CiAgCiAgPCEtLSBUZXh0OiBSZXZpZXdzIC0tPgogIDx0ZXh0IHg9IjMyMCIgeT0iMzMwIiBmb250LWZhbWlseT0iJ0JydXNoIFNjcmlwdCBNVCcsIGN1cnNpdmUsIHNlcmlmIiBmb250LXNpemU9IjcwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbHRlcj0idXJsKCNzaGFkb3cpIiBmb250LXN0eWxlPSJpdGFsaWMiPgogICAgUmV2aWV3cwogIDwvdGV4dD4KPC9zdmc+" alt="Hosman Reviews Logo">
-                    <div class="logo-text">Hosman Reviews</div>
-                </div>
-                
-                <div class="search-bar">
-                    <input type="text" id="search-input" placeholder="Search for movies...">
-                    <button id="search-btn">🔍</button>
-                </div>
-                
-                <div class="nav-links">
-                    <a href="#" class="active">Home</a>
-                    <a href="#">Movies</a>
-                    <a href="#">TV Shows</a>
-                    <a href="#">Top Reviews</a>
-                </div>
+        <div class="logo-container">
+            <div class="logo">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="48" fill="#C73737" stroke="white" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="40" fill="#8B2020" opacity="0.7"/>
+                    <text x="50" y="55" font-family="Georgia, serif" font-size="24" font-weight="bold" 
+                          fill="white" text-anchor="middle" font-style="italic">HR</text>
+                </svg>
             </div>
+            <div class="logo-text">Latest Movies on <span>Hosman</span></div>
         </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#movies"><i class="fas fa-film"></i> Movies</a></li>
+                <li><a href="#tv-series"><i class="fas fa-tv"></i> TV Shows</a></li>
+                <li><a href="#ai-recommendations"><i class="fas fa-robot"></i> AI Recommendations</a></li>
+            </ul>
+        </nav>
+        
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search for movies, shows, or ask AI...">
+            <button id="search-button"><i class="fas fa-search"></i></button>
+        </div>
+        
+        <button class="telegram-cta" id="telegram-cta">
+            <i class="fab fa-telegram"></i> Join Telegram
+        </button>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Honest Movie Reviews You Can Trust</h1>
-            <p>Discover unbiased movie reviews from real users. Our automated system ensures you get the latest and most relevant information.</p>
-            <a href="#" class="cta-button">Browse Movies</a>
+    <main>
+        <div class="system-status">
+            <div class="status-indicator"></div>
+            <span>AI System Online - All features working</span>
         </div>
-    </section>
 
-    <div class="container">
-        <!-- Stats Section -->
-        <section class="stats">
-            <div class="stat-card">
-                <div class="stat-number" id="movie-count">0</div>
-                <div class="stat-label">Movies Reviewed</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="user-count">0</div>
-                <div class="stat-label">User Reviews</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="genre-count">0</div>
-                <div class="stat-label">Genres Covered</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Automated Updates</div>
+        <section class="hero">
+            <h1>Discover Your Next Favorite Movie</h1>
+            <p>AI-powered recommendations, personalized just for you. Get intelligent insights and join the discussion on Telegram.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" id="explore-ai">Explore AI Recommendations</button>
+                <button class="btn btn-secondary" id="join-telegram">Join Telegram Channel</button>
             </div>
         </section>
 
-        <!-- Filters -->
-        <section class="filters">
-            <div class="filter-group">
-                <div class="filter-title">Genres</div>
-                <div class="filter-options" id="genre-filters">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-            </div>
-            <div class="filter-group">
-                <div class="filter-title">Rating</div>
-                <div class="filter-options">
-                    <button class="filter-btn active" data-rating="all">All Ratings</button>
-                    <button class="filter-btn" data-rating="5">5 Stars</button>
-                    <button class="filter-btn" data-rating="4">4+ Stars</button>
-                    <button class="filter-btn" data-rating="3">3+ Stars</button>
-                </div>
-            </div>
-            <div class="filter-group">
-                <div class="filter-title">Sort By</div>
-                <div class="filter-options">
-                    <button class="filter-btn active" data-sort="popularity">Most Popular</button>
-                    <button class="filter-btn" data-sort="rating">Highest Rated</button>
-                    <button class="filter-btn" data-sort="release_date">Newest</button>
-                </div>
-            </div>
+        <section class="ai-explanation">
+            <h3><i class="fas fa-robot"></i> AI Recommendation Insight</h3>
+            <p id="ai-insight-text">Based on current trending data, our AI has curated these selections focusing on highly-rated content with strong audience appeal and critical reception.</p>
         </section>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Movies Column -->
-            <div class="movies-column" id="movies-container">
+        <section class="search-results" id="search-results">
+            <div class="section-title">
+                <h2>Search Results</h2>
+            </div>
+            <div class="cards-container" id="search-results-container"></div>
+        </section>
+
+        <section id="ai-recommendations">
+            <div class="section-title">
+                <h2>Gemini's Daily Picks</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="cards-container" id="daily-picks">
                 <div class="loading">
                     <div class="spinner"></div>
                 </div>
             </div>
+        </section>
 
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">Top Genres</h3>
-                    <ul class="categories-list" id="genre-list">
-                        <!-- Will be populated by JavaScript -->
-                    </ul>
+        <section id="movies">
+            <div class="section-title">
+                <h2>Trending Movies</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="cards-container" id="trending">
+                <div class="loading">
+                    <div class="spinner"></div>
                 </div>
+            </div>
+        </section>
 
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">Trending Movies</h3>
-                    <div id="trending-movies">
-                        <!-- Will be populated by JavaScript -->
+        <section class="tv-series" id="tv-series">
+            <div class="section-title">
+                <h2>Popular TV Series</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="cards-container" id="tv-series-container">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="telegram-integration">
+            <h2>Join Our Telegram Community</h2>
+            <p>Get exclusive reviews, behind-the-scenes insights, and join discussions with fellow movie enthusiasts. Our AI generates daily content and conversation starters.</p>
+            <button class="telegram-cta" id="telegram-integration-cta">
+                <i class="fab fa-telegram"></i> Join t.me/HosmanReviews
+            </button>
+        </section>
+
+        <section>
+            <div class="section-title">
+                <h2>Because You Watched Similar Content</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <div class="cards-container" id="recommendations">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Latest Movies on Hosman</h3>
+                <p>AI-powered movie discovery platform with intelligent recommendations and Telegram integration.</p>
+                <div class="social-links">
+                    <a href="https://t.me/HosmanReviews" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="#" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" title="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#movies">Movies</a></li>
+                    <li><a href="#tv-series">TV Shows</a></li>
+                    <li><a href="#ai-recommendations">AI Recommendations</a></li>
+                    <li><a href="https://t.me/HosmanReviews" target="_blank">Telegram Channel</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 Latest Movies on Hosman. All rights reserved. This site uses TMDB and Gemini APIs.</p>
+        </div>
+    </footer>
+
+    <div class="modal" id="movie-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="movie-detail">
+                <img src="" alt="Movie Poster" class="movie-poster">
+                <div class="movie-info">
+                    <h2 id="modal-title">Movie Title</h2>
+                    <div class="movie-meta">
+                        <span id="modal-year">2023</span>
+                        <span id="modal-rating">8.5/10</span>
+                        <span id="modal-runtime">120min</span>
                     </div>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3 class="sidebar-title">Automation Features</h3>
-                    <p>Our system automatically:</p>
-                    <ul style="margin-left: 20px; margin-top: 10px;">
-                        <li>Fetches latest movies from TMDB</li>
-                        <li>Updates ratings in real-time</li>
-                        <li>Categorizes movies by genre</li>
-                        <li>Generates weekly trending reports</li>
-                        <li>Processes data client-side with WebAssembly</li>
-                    </ul>
+                    <p class="movie-overview" id="modal-overview">Movie overview goes here...</p>
+                    <div class="ai-insights">
+                        <h3><i class="fas fa-robot"></i> AI Insights</h3>
+                        <p id="modal-ai-insights">Loading AI insights...</p>
+                    </div>
+                    <div class="telegram-review">
+                        <h3><i class="fab fa-telegram"></i> Telegram Review</h3>
+                        <p id="modal-telegram-review">Latest review from our Telegram channel...</p>
+                    </div>
+                    <button class="telegram-cta" id="modal-telegram-cta" style="margin-top: 1rem;">
+                        <i class="fab fa-telegram"></i> Discuss on Telegram
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>Hosman Reviews</h3>
-                    <p>Your trusted source for honest movie reviews. Our automated system ensures you get the most up-to-date and relevant information.</p>
-                    <div class="social-links">
-                        <a href="https://t.me/HosmanReviews" target="_blank"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Movies</a></li>
-                        <li><a href="#">TV Shows</a></li>
-                        <li><a href="#">Write a Review</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Genres</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Comedy</a></li>
-                        <li><a href="#">Drama</a></li>
-                        <li><a href="#">Horror</a></li>
-                        <li><a href="#">Sci-Fi</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact Us</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Support Center</a></li>
-                        <li><a href="#">Feedback</a></li>
-                        <li><a href="#">Partnerships</a></li>
-                        <li><a href="#">Advertising</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                &copy; 2023 Hosman Reviews. All rights reserved. | Automated Review System | Powered by TMDB API
-            </div>
-        </div>
-    </footer>
-
-    <!-- WebAssembly Loader -->
     <script>
-        // WebAssembly Module for data processing
-        const wasmModule = new WebAssembly.Instance(new WebAssembly.Module(new Uint8Array([
-            0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
-            // ... (WebAssembly binary code would go here)
-        ])));
-
-        // TMDB API Configuration
-        const TMDB_API_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5ZTYzNzRiZTQ2ZTYxNGY2MzZkNjgxOWRiYmU1NGYyYiIsIm5iZiI6MTc2MzE4NjgxNC40MTEsInN1YiI6IjY5MTgxODdlOTUxNDNkZmE0NmEwZTU1OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SWHyK0g4TvYfDL825KRKKhGcV3nkzfAYVZdigor2QAk';
-        const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
-        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+        const TMDB_ACCESS_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5ZTYzNzRiZTQ2ZTYxNGY2MzZkNjgxOWRiYmU1NGYyYiIsIm5iZiI6MTc2MzE4NjgxNC40MTEsInN1YiI6IjY5MTgxODdlOTUxNDNkZmE0NmEwZTU1OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SWHyK0g4TvYfDL825KRKKhGcV3nkzfAYVZdigor2QAk';
+        const GEMINI_API_KEY = 'AIzaSyCTRuQZDxXGf-u2MY9HErtJWhQGgQ4_nhY';
         
-        let currentMovies = [];
-        let currentGenres = [];
-        let currentPage = 1;
-        let isLoading = false;
+        const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+        const TMDB_IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+        const PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80';
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            loadGenres();
-            loadPopularMovies();
-            setupEventListeners();
-            
-            // Simulate WebAssembly processing
-            simulateWasmProcessing();
-        });
-
-        // Setup event listeners
-        function setupEventListeners() {
-            document.getElementById('search-btn').addEventListener('click', handleSearch);
-            document.getElementById('search-input').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') handleSearch();
-            });
-            
-            // Filter buttons
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const parent = this.parentElement;
-                    parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    if (this.dataset.rating) {
-                        filterByRating(this.dataset.rating);
-                    } else if (this.dataset.sort) {
-                        sortMovies(this.dataset.sort);
+        async function fetchFromTMDB(endpoint) {
+            try {
+                const response = await fetch(`${TMDB_BASE_URL}${endpoint}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TMDB_ACCESS_TOKEN}`,
+                        'Content-Type': 'application/json;charset=utf-8'
                     }
                 });
-            });
+                
+                if (!response.ok) throw new Error(`TMDB API error: ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error('Error fetching from TMDB:', error);
+                return null;
+            }
         }
 
-        // Load movie genres from TMDB
-        async function loadGenres() {
+        async function fetchTrendingMovies() {
+            const data = await fetchFromTMDB('/trending/movie/week');
+            return data && data.results ? data.results.slice(0, 10) : [];
+        }
+
+        async function fetchPopularTVSeries() {
+            const data = await fetchFromTMDB('/tv/popular');
+            return data && data.results ? data.results.slice(0, 10) : [];
+        }
+
+        async function fetchMovieDetails(movieId) {
+            return await fetchFromTMDB(`/movie/${movieId}`);
+        }
+
+        async function fetchTVDetails(tvId) {
+            return await fetchFromTMDB(`/tv/${tvId}`);
+        }
+
+        async function searchTMDB(query) {
+            const data = await fetchFromTMDB(`/search/multi?query=${encodeURIComponent(query)}&include_adult=false`);
+            if (data && data.results) {
+                return data.results.filter(item => item.media_type === 'movie' || item.media_type === 'tv');
+            }
+            return [];
+        }
+
+        async function generateAIInsights(item, isTV = false) {
             try {
-                const response = await fetch(`${TMDB_BASE_URL}/genre/movie/list`, {
-                    headers: {
-                        'Authorization': `Bearer ${TMDB_API_TOKEN}`
-                    }
+                const type = isTV ? 'TV show' : 'movie';
+                const title = isTV ? item.name : item.title;
+                const description = item.overview || 'No description available.';
+                const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
+                
+                const prompt = `Analyze this ${type} and provide a brief insight (max 2 sentences):
+
+Title: ${title}
+Rating: ${rating}/10
+Description: ${description}
+
+Provide a concise analysis focusing on why someone might enjoy this ${type} and what makes it stand out.`;
+
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
                 });
+                
+                if (!response.ok) throw new Error(`Gemini API error: ${response.status}`);
                 
                 const data = await response.json();
-                currentGenres = data.genres;
-                
-                updateGenreFilters();
-                updateGenreList();
-                document.getElementById('genre-count').textContent = currentGenres.length;
+                return data.candidates[0].content.parts[0].text;
             } catch (error) {
-                console.error('Error loading genres:', error);
-            }
-        }
-
-        // Load popular movies from TMDB
-        async function loadPopularMovies() {
-            if (isLoading) return;
-            
-            isLoading = true;
-            document.getElementById('movies-container').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-            
-            try {
-                const response = await fetch(`${TMDB_BASE_URL}/movie/popular?page=${currentPage}`, {
-                    headers: {
-                        'Authorization': `Bearer ${TMDB_API_TOKEN}`
-                    }
-                });
-                
-                const data = await response.json();
-                currentMovies = data.results;
-                
-                displayMovies(currentMovies);
-                updateStats(data.total_results);
-                updateTrendingMovies(currentMovies.slice(0, 5));
-            } catch (error) {
-                console.error('Error loading movies:', error);
-                document.getElementById('movies-container').innerHTML = '<p>Error loading movies. Please try again later.</p>';
-            } finally {
-                isLoading = false;
-            }
-        }
-
-        // Search for movies
-        async function handleSearch() {
-            const query = document.getElementById('search-input').value.trim();
-            
-            if (!query) {
-                loadPopularMovies();
-                return;
-            }
-            
-            isLoading = true;
-            document.getElementById('movies-container').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-            
-            try {
-                const response = await fetch(`${TMDB_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`, {
-                    headers: {
-                        'Authorization': `Bearer ${TMDB_API_TOKEN}`
-                    }
-                });
-                
-                const data = await response.json();
-                currentMovies = data.results;
-                
-                displayMovies(currentMovies);
-            } catch (error) {
-                console.error('Error searching movies:', error);
-                document.getElementById('movies-container').innerHTML = '<p>Error searching movies. Please try again later.</p>';
-            } finally {
-                isLoading = false;
-            }
-        }
-
-        // Display movies in the container
-        function displayMovies(movies) {
-            const container = document.getElementById('movies-container');
-            
-            if (!movies || movies.length === 0) {
-                container.innerHTML = '<p>No movies found. Try a different search.</p>';
-                return;
-            }
-            
-            container.innerHTML = movies.map(movie => `
-                <div class="movie-card">
-                    <img src="${movie.poster_path ? IMAGE_BASE_URL + movie.poster_path : 'https://via.placeholder.com/500x750?text=No+Image'}" 
-                         alt="${movie.title}" class="movie-poster">
-                    <div class="movie-info">
-                        <div class="movie-title">
-                            ${movie.title}
-                            <span class="movie-year">${movie.release_date ? new Date(movie.release_date).getFullYear() : 'TBA'}</span>
-                        </div>
-                        <div class="movie-rating">
-                            <div class="stars">${getStarRating(movie.vote_average)}</div>
-                            <span class="rating-value">${movie.vote_average.toFixed(1)}</span>
-                        </div>
-                        <p class="movie-overview">${movie.overview || 'No description available.'}</p>
-                        <div class="movie-genres">
-                            ${getMovieGenres(movie.genre_ids).map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
-                        </div>
-                        <div class="movie-actions">
-                            <button class="action-btn"><i class="far fa-thumbs-up"></i> Like</button>
-                            <button class="action-btn"><i class="far fa-comment"></i> Review</button>
-                            <button class="action-btn"><i class="far fa-share-square"></i> Share</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Get star rating based on vote average
-        function getStarRating(voteAverage) {
-            const rating = Math.round(voteAverage / 2);
-            return '★'.repeat(rating) + '☆'.repeat(5 - rating);
-        }
-
-        // Get genre names from genre IDs
-        function getMovieGenres(genreIds) {
-            return genreIds.map(id => {
-                const genre = currentGenres.find(g => g.id === id);
-                return genre ? genre.name : '';
-            }).filter(name => name);
-        }
-
-        // Update genre filters
-        function updateGenreFilters() {
-            const container = document.getElementById('genre-filters');
-            container.innerHTML = '<button class="filter-btn active" data-genre="all">All Genres</button>';
-            
-            currentGenres.slice(0, 8).forEach(genre => {
-                container.innerHTML += `<button class="filter-btn" data-genre="${genre.id}">${genre.name}</button>`;
-            });
-            
-            // Add event listeners to genre filters
-            container.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const parent = this.parentElement;
-                    parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    if (this.dataset.genre === 'all') {
-                        displayMovies(currentMovies);
-                    } else {
-                        filterByGenre(parseInt(this.dataset.genre));
-                    }
-                });
-            });
-        }
-
-        // Update genre list in sidebar
-        function updateGenreList() {
-            const container = document.getElementById('genre-list');
-            container.innerHTML = '';
-            
-            currentGenres.slice(0, 10).forEach(genre => {
-                const count = Math.floor(Math.random() * 500) + 50; // Simulated count
-                container.innerHTML += `
-                    <li>
-                        <a href="#">
-                            ${genre.name}
-                            <span class="count">${count}</span>
-                        </a>
-                    </li>
-                `;
-            });
-        }
-
-        // Update trending movies in sidebar
-        function updateTrendingMovies(movies) {
-            const container = document.getElementById('trending-movies');
-            container.innerHTML = '';
-            
-            movies.forEach((movie, index) => {
-                container.innerHTML += `
-                    <div class="trending-item">
-                        <div class="trending-rank">${index + 1}</div>
-                        <div class="trending-content">
-                            <h4>${movie.title}</h4>
-                            <div class="rating">
-                                <span class="stars">${getStarRating(movie.vote_average)}</span>
-                                <span>${movie.vote_average.toFixed(1)}</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        // Update statistics
-        function updateStats(totalMovies) {
-            document.getElementById('movie-count').textContent = totalMovies.toLocaleString();
-            document.getElementById('user-count').textContent = (Math.floor(totalMovies * 8.5)).toLocaleString();
-        }
-
-        // Filter movies by genre
-        function filterByGenre(genreId) {
-            const filtered = currentMovies.filter(movie => 
-                movie.genre_ids.includes(genreId)
-            );
-            displayMovies(filtered);
-        }
-
-        // Filter movies by rating
-        function filterByRating(rating) {
-            if (rating === 'all') {
-                displayMovies(currentMovies);
-                return;
-            }
-            
-            const minRating = parseFloat(rating);
-            const filtered = currentMovies.filter(movie => 
-                movie.vote_average >= minRating
-            );
-            displayMovies(filtered);
-        }
-
-        // Sort movies
-        function sortMovies(criteria) {
-            const sorted = [...currentMovies];
-            
-            switch(criteria) {
-                case 'rating':
-                    sorted.sort((a, b) => b.vote_average - a.vote_average);
-                    break;
-                case 'release_date':
-                    sorted.sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
-                    break;
-                case 'popularity':
-                default:
-                    sorted.sort((a, b) => b.popularity - a.popularity);
-                    break;
-            }
-            
-            displayMovies(sorted);
-        }
-
-        // Simulate WebAssembly processing
-        function simulateWasmProcessing() {
-            console.log('WebAssembly module loaded and processing data...');
-            
-            // Simulate processing delay
-            setTimeout(() => {
-                console.log('Data processing complete with WebAssembly');
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
+                console.error("Gemini API error:", error);
+                return generateSimpleInsights(item, isTV
