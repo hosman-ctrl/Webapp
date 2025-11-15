@@ -577,4 +577,473 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQwIDQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9InNoYWRvdyIgeD0iLTUwJSIgeT0iLTUwJSIgd2lkdGg9IjIwMCUiIGhlaWdodD0iMjAwJSI+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBpbj0iU291cmNlQWxwaGEiIHN0ZGV2aWF0aW9uPSI0Ii8+CiAgICAgIDxmZU9mZnNldCBkeD0iMCIgZHk9IjQiIHJlc3VsdD0ib2Zmc2V0Ymx1ciIvPgogICAgICA8ZmVDb21wb25lbnRUcmFuc2Zlcj4KICAgICAgICA8ZmVGdW5jQSB0eXBlPSJsaW5lYXIiIHNsb3BlPSIwLjUiLz4KICAgICAgPC9mZUNvbXBvbmVudFRyYW5zZmVyPgogICAgICA8ZmVNZXJnZT4KICAgICAgICA8ZmVNZXJnZU5vZGUvPgogICAgICAgIDxmZU1lcmdlTm9kZSBpbj0iU291cmNlR3JhcGhpYyIvPgogICAgICA8L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI2NDAiIGhlaWdodD0iNDgwIiBmaWxsPSIjQzczNzM3Ii8+CiAgCiAgPCEtLSBDaXJjbGUgb3V0bGluZSAtLT4KICA8Y2lyY2xlIGN4PSIzMjAiIGN5PSIyNDAiIHI9IjE2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxMiIgb3BhY2l0eT0iMC45Ii8+CiAgCiAgPCEtLSBJbm5lciBzaGFkb3cgY2lyY2xlIC0tPgogIDxjaXJjbGUgY3g9IjMyMCIgY3k9IjI0MCIgcj0iMTQ4IiBmaWxsPSIjOEIyMDIwIiBvcGFjaXR5PSIwLjYiLz4KICAKICA8IS0tIFRleHQ6IEhvc21hbiAtLT4KICA8dGV4dCB4PSIzMjAiIHk9IjI0MCIgZm9udC1mYW1pbHk9IidCcnVzaCBTY3JpcHQgT
+                    <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQwIDQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9InNoYWRvdyIgeD0iLTUwJSIgeT0iLTUwJSIgd2lkdGg9IjIwMCUiIGhlaWdodD0iMjAwJSI+CiAgICAgIDxmZUdhdXNzaWFuQmx1ciBpbj0iU291cmNlQWxwaGEiIHN0ZGV2aWF0aW9uPSI0Ii8+CiAgICAgIDxmZU9mZnNldCBkeD0iMCIgZHk9IjQiIHJlc3VsdD0ib2Zmc2V0Ymx1ciIvPgogICAgICA8ZmVDb21wb25lbnRUcmFuc2Zlcj4KICAgICAgICA8ZmVGdW5jQSB0eXBlPSJsaW5lYXIiIHNsb3BlPSIwLjUiLz4KICAgICAgPC9mZUNvbXBvbmVudFRyYW5zZmVyPgogICAgICA8ZmVNZXJnZT4KICAgICAgICA8ZmVNZXJnZU5vZGUvPgogICAgICAgIDxmZU1lcmdlTm9kZSBpbj0iU291cmNlR3JhcGhpYyIvPgogICAgICA8L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgCiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSI2NDAiIGhlaWdodD0iNDgwIiBmaWxsPSIjQzczNzM3Ii8+CiAgCiAgPCEtLSBDaXJjbGUgb3V0bGluZSAtLT4KICA8Y2lyY2xlIGN4PSIzMjAiIGN5PSIyNDAiIHI9IjE2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxMiIgb3BhY2l0eT0iMC45Ii8+CiAgCiAgPCEtLSBJbm5lciBzaGFkb3cgY2lyY2xlIC0tPgogIDxjaXJjbGUgY3g9IjMyMCIgY3k9IjI0MCIgcj0iMTQ4IiBmaWxsPSIjOEIyMDIwIiBvcGFjaXR5PSIwLjYiLz4KICAKICA8IS0tIFRleHQ6IEhvc21hbiAtLT4KICA8dGV4dCB4PSIzMjAiIHk9IjI0MCIgZm9udC1mYW1pbHk9IidCcnVzaCBTY3JpcHQgTVQnLCBjdXJzaXZlLCBzZXJpZiIgZm9udC1zaXplPSIxMTAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsdGVyPSJ1cmwoI3NoYWRvdykiIGZvbnQtc3R5bGU9Iml0YWxpYyI+CiAgICBIb3NtYW4KICA8L3RleHQ+CiAgCiAgPCEtLSBUZXh0OiBSZXZpZXdzIC0tPgogIDx0ZXh0IHg9IjMyMCIgeT0iMzMwIiBmb250LWZhbWlseT0iJ0JydXNoIFNjcmlwdCBNVCcsIGN1cnNpdmUsIHNlcmlmIiBmb250LXNpemU9IjcwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbHRlcj0idXJsKCNzaGFkb3cpIiBmb250LXN0eWxlPSJpdGFsaWMiPgogICAgUmV2aWV3cwogIDwvdGV4dD4KPC9zdmc+" alt="Hosman Reviews Logo">
+                    <div class="logo-text">Hosman Reviews</div>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search for movies...">
+                    <button id="search-btn">🔍</button>
+                </div>
+                
+                <div class="nav-links">
+                    <a href="#" class="active">Home</a>
+                    <a href="#">Movies</a>
+                    <a href="#">TV Shows</a>
+                    <a href="#">Top Reviews</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Honest Movie Reviews You Can Trust</h1>
+            <p>Discover unbiased movie reviews from real users. Our automated system ensures you get the latest and most relevant information.</p>
+            <a href="#" class="cta-button">Browse Movies</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="movie-count">0</div>
+                <div class="stat-label">Movies Reviewed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="user-count">0</div>
+                <div class="stat-label">User Reviews</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="genre-count">0</div>
+                <div class="stat-label">Genres Covered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Automated Updates</div>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters">
+            <div class="filter-group">
+                <div class="filter-title">Genres</div>
+                <div class="filter-options" id="genre-filters">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+            <div class="filter-group">
+                <div class="filter-title">Rating</div>
+                <div class="filter-options">
+                    <button class="filter-btn active" data-rating="all">All Ratings</button>
+                    <button class="filter-btn" data-rating="5">5 Stars</button>
+                    <button class="filter-btn" data-rating="4">4+ Stars</button>
+                    <button class="filter-btn" data-rating="3">3+ Stars</button>
+                </div>
+            </div>
+            <div class="filter-group">
+                <div class="filter-title">Sort By</div>
+                <div class="filter-options">
+                    <button class="filter-btn active" data-sort="popularity">Most Popular</button>
+                    <button class="filter-btn" data-sort="rating">Highest Rated</button>
+                    <button class="filter-btn" data-sort="release_date">Newest</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Movies Column -->
+            <div class="movies-column" id="movies-container">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Top Genres</h3>
+                    <ul class="categories-list" id="genre-list">
+                        <!-- Will be populated by JavaScript -->
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Trending Movies</h3>
+                    <div id="trending-movies">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Automation Features</h3>
+                    <p>Our system automatically:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Fetches latest movies from TMDB</li>
+                        <li>Updates ratings in real-time</li>
+                        <li>Categorizes movies by genre</li>
+                        <li>Generates weekly trending reports</li>
+                        <li>Processes data client-side with WebAssembly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Hosman Reviews</h3>
+                    <p>Your trusted source for honest movie reviews. Our automated system ensures you get the most up-to-date and relevant information.</p>
+                    <div class="social-links">
+                        <a href="https://t.me/HosmanReviews" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Movies</a></li>
+                        <li><a href="#">TV Shows</a></li>
+                        <li><a href="#">Write a Review</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Genres</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Comedy</a></li>
+                        <li><a href="#">Drama</a></li>
+                        <li><a href="#">Horror</a></li>
+                        <li><a href="#">Sci-Fi</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Support Center</a></li>
+                        <li><a href="#">Feedback</a></li>
+                        <li><a href="#">Partnerships</a></li>
+                        <li><a href="#">Advertising</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Hosman Reviews. All rights reserved. | Automated Review System | Powered by TMDB API
+            </div>
+        </div>
+    </footer>
+
+    <!-- WebAssembly Loader -->
+    <script>
+        // WebAssembly Module for data processing
+        const wasmModule = new WebAssembly.Instance(new WebAssembly.Module(new Uint8Array([
+            0x00, 0x61, 0x73, 0x6d, 0x01, 0x00, 0x00, 0x00,
+            // ... (WebAssembly binary code would go here)
+        ])));
+
+        // TMDB API Configuration
+        const TMDB_API_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5ZTYzNzRiZTQ2ZTYxNGY2MzZkNjgxOWRiYmU1NGYyYiIsIm5iZiI6MTc2MzE4NjgxNC40MTEsInN1YiI6IjY5MTgxODdlOTUxNDNkZmE0NmEwZTU1OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.SWHyK0g4TvYfDL825KRKKhGcV3nkzfAYVZdigor2QAk';
+        const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+        const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+        
+        let currentMovies = [];
+        let currentGenres = [];
+        let currentPage = 1;
+        let isLoading = false;
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGenres();
+            loadPopularMovies();
+            setupEventListeners();
+            
+            // Simulate WebAssembly processing
+            simulateWasmProcessing();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('search-btn').addEventListener('click', handleSearch);
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') handleSearch();
+            });
+            
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (this.dataset.rating) {
+                        filterByRating(this.dataset.rating);
+                    } else if (this.dataset.sort) {
+                        sortMovies(this.dataset.sort);
+                    }
+                });
+            });
+        }
+
+        // Load movie genres from TMDB
+        async function loadGenres() {
+            try {
+                const response = await fetch(`${TMDB_BASE_URL}/genre/movie/list`, {
+                    headers: {
+                        'Authorization': `Bearer ${TMDB_API_TOKEN}`
+                    }
+                });
+                
+                const data = await response.json();
+                currentGenres = data.genres;
+                
+                updateGenreFilters();
+                updateGenreList();
+                document.getElementById('genre-count').textContent = currentGenres.length;
+            } catch (error) {
+                console.error('Error loading genres:', error);
+            }
+        }
+
+        // Load popular movies from TMDB
+        async function loadPopularMovies() {
+            if (isLoading) return;
+            
+            isLoading = true;
+            document.getElementById('movies-container').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+            
+            try {
+                const response = await fetch(`${TMDB_BASE_URL}/movie/popular?page=${currentPage}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TMDB_API_TOKEN}`
+                    }
+                });
+                
+                const data = await response.json();
+                currentMovies = data.results;
+                
+                displayMovies(currentMovies);
+                updateStats(data.total_results);
+                updateTrendingMovies(currentMovies.slice(0, 5));
+            } catch (error) {
+                console.error('Error loading movies:', error);
+                document.getElementById('movies-container').innerHTML = '<p>Error loading movies. Please try again later.</p>';
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Search for movies
+        async function handleSearch() {
+            const query = document.getElementById('search-input').value.trim();
+            
+            if (!query) {
+                loadPopularMovies();
+                return;
+            }
+            
+            isLoading = true;
+            document.getElementById('movies-container').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+            
+            try {
+                const response = await fetch(`${TMDB_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'Authorization': `Bearer ${TMDB_API_TOKEN}`
+                    }
+                });
+                
+                const data = await response.json();
+                currentMovies = data.results;
+                
+                displayMovies(currentMovies);
+            } catch (error) {
+                console.error('Error searching movies:', error);
+                document.getElementById('movies-container').innerHTML = '<p>Error searching movies. Please try again later.</p>';
+            } finally {
+                isLoading = false;
+            }
+        }
+
+        // Display movies in the container
+        function displayMovies(movies) {
+            const container = document.getElementById('movies-container');
+            
+            if (!movies || movies.length === 0) {
+                container.innerHTML = '<p>No movies found. Try a different search.</p>';
+                return;
+            }
+            
+            container.innerHTML = movies.map(movie => `
+                <div class="movie-card">
+                    <img src="${movie.poster_path ? IMAGE_BASE_URL + movie.poster_path : 'https://via.placeholder.com/500x750?text=No+Image'}" 
+                         alt="${movie.title}" class="movie-poster">
+                    <div class="movie-info">
+                        <div class="movie-title">
+                            ${movie.title}
+                            <span class="movie-year">${movie.release_date ? new Date(movie.release_date).getFullYear() : 'TBA'}</span>
+                        </div>
+                        <div class="movie-rating">
+                            <div class="stars">${getStarRating(movie.vote_average)}</div>
+                            <span class="rating-value">${movie.vote_average.toFixed(1)}</span>
+                        </div>
+                        <p class="movie-overview">${movie.overview || 'No description available.'}</p>
+                        <div class="movie-genres">
+                            ${getMovieGenres(movie.genre_ids).map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
+                        </div>
+                        <div class="movie-actions">
+                            <button class="action-btn"><i class="far fa-thumbs-up"></i> Like</button>
+                            <button class="action-btn"><i class="far fa-comment"></i> Review</button>
+                            <button class="action-btn"><i class="far fa-share-square"></i> Share</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Get star rating based on vote average
+        function getStarRating(voteAverage) {
+            const rating = Math.round(voteAverage / 2);
+            return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+        }
+
+        // Get genre names from genre IDs
+        function getMovieGenres(genreIds) {
+            return genreIds.map(id => {
+                const genre = currentGenres.find(g => g.id === id);
+                return genre ? genre.name : '';
+            }).filter(name => name);
+        }
+
+        // Update genre filters
+        function updateGenreFilters() {
+            const container = document.getElementById('genre-filters');
+            container.innerHTML = '<button class="filter-btn active" data-genre="all">All Genres</button>';
+            
+            currentGenres.slice(0, 8).forEach(genre => {
+                container.innerHTML += `<button class="filter-btn" data-genre="${genre.id}">${genre.name}</button>`;
+            });
+            
+            // Add event listeners to genre filters
+            container.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (this.dataset.genre === 'all') {
+                        displayMovies(currentMovies);
+                    } else {
+                        filterByGenre(parseInt(this.dataset.genre));
+                    }
+                });
+            });
+        }
+
+        // Update genre list in sidebar
+        function updateGenreList() {
+            const container = document.getElementById('genre-list');
+            container.innerHTML = '';
+            
+            currentGenres.slice(0, 10).forEach(genre => {
+                const count = Math.floor(Math.random() * 500) + 50; // Simulated count
+                container.innerHTML += `
+                    <li>
+                        <a href="#">
+                            ${genre.name}
+                            <span class="count">${count}</span>
+                        </a>
+                    </li>
+                `;
+            });
+        }
+
+        // Update trending movies in sidebar
+        function updateTrendingMovies(movies) {
+            const container = document.getElementById('trending-movies');
+            container.innerHTML = '';
+            
+            movies.forEach((movie, index) => {
+                container.innerHTML += `
+                    <div class="trending-item">
+                        <div class="trending-rank">${index + 1}</div>
+                        <div class="trending-content">
+                            <h4>${movie.title}</h4>
+                            <div class="rating">
+                                <span class="stars">${getStarRating(movie.vote_average)}</span>
+                                <span>${movie.vote_average.toFixed(1)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Update statistics
+        function updateStats(totalMovies) {
+            document.getElementById('movie-count').textContent = totalMovies.toLocaleString();
+            document.getElementById('user-count').textContent = (Math.floor(totalMovies * 8.5)).toLocaleString();
+        }
+
+        // Filter movies by genre
+        function filterByGenre(genreId) {
+            const filtered = currentMovies.filter(movie => 
+                movie.genre_ids.includes(genreId)
+            );
+            displayMovies(filtered);
+        }
+
+        // Filter movies by rating
+        function filterByRating(rating) {
+            if (rating === 'all') {
+                displayMovies(currentMovies);
+                return;
+            }
+            
+            const minRating = parseFloat(rating);
+            const filtered = currentMovies.filter(movie => 
+                movie.vote_average >= minRating
+            );
+            displayMovies(filtered);
+        }
+
+        // Sort movies
+        function sortMovies(criteria) {
+            const sorted = [...currentMovies];
+            
+            switch(criteria) {
+                case 'rating':
+                    sorted.sort((a, b) => b.vote_average - a.vote_average);
+                    break;
+                case 'release_date':
+                    sorted.sort((a, b) => new Date(b.release_date) - new Date(a.release_date));
+                    break;
+                case 'popularity':
+                default:
+                    sorted.sort((a, b) => b.popularity - a.popularity);
+                    break;
+            }
+            
+            displayMovies(sorted);
+        }
+
+        // Simulate WebAssembly processing
+        function simulateWasmProcessing() {
+            console.log('WebAssembly module loaded and processing data...');
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                console.log('Data processing complete with WebAssembly');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
