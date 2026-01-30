@@ -698,4 +698,431 @@
                 if (e.target === gameModal) closeModal();
             });
             
-            // Escape key to c
+            // Escape key to close modal
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeModal();
+            });
+        }
+        
+        // Fetch games from RAWG API
+        async function fetchGames() {
+            try {
+                // Show loading state
+                loading.style.display = 'flex';
+                gamesGrid.innerHTML = '';
+                
+                // Set current date and future date for filtering
+                const currentDate = new Date().toISOString().split('T')[0];
+                const futureDate = new Date();
+                futureDate.setFullYear(futureDate.getFullYear() + 1);
+                const futureDateStr = futureDate.toISOString().split('T')[0];
+                
+                // Fetch games with release dates in the next year
+                const response = await fetch(
+                    `${API_URL}?key=${API_KEY}&dates=${currentDate},${futureDateStr}&ordering=released&page_size=40`
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allGames = data.results;
+                currentFilteredGames = [...allGames];
+                
+                // Hide loading state
+                loading.style.display = 'none';
+                
+                // Display games
+                displayGames(currentFilteredGames);
+                
+            } catch (error) {
+                console.error('Error fetching games:', error);
+                loading.style.display = 'none';
+                
+                // Show error state
+                gamesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h2>Failed to load games</h2>
+                        <p>Please check your connection and try again.</p>
+                        <button id="retryButton" class="add-to-calendar-btn" style="margin-top: 20px;">
+                            Retry
+                        </button>
+                    </div>
+                `;
+                
+                // Add retry functionality
+                document.getElementById('retryButton')?.addEventListener('click', fetchGames);
+            }
+        }
+        
+        // Display games in the grid
+        function displayGames(games) {
+            if (games.length === 0) {
+                emptyState.style.display = 'block';
+                gamesGrid.innerHTML = '';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            gamesGrid.innerHTML = '';
+            
+            games.forEach(game => {
+                const gameCard = createGameCard(game);
+                gamesGrid.appendChild(gameCard);
+            });
+        }
+        
+        // Create a game card element
+        function createGameCard(game) {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.dataset.id = game.id;
+            
+            // Format release date
+            const releaseDate = game.released ? new Date(game.released).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : 'TBA';
+            
+            // Get platforms
+            const platforms = game.platforms ? 
+                game.platforms.map(p => p.platform.name).slice(0, 3) : [];
+            
+            // Create card HTML
+            card.innerHTML = `
+                <img class="game-card-image" src="${game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'}" alt="${game.name}">
+                <div class="game-card-content">
+                    <h3 class="game-card-title">${game.name}</h3>
+                    <div class="game-card-date">
+                        <i class="far fa-calendar"></i>
+                        <span>${releaseDate}</span>
+                    </div>
+                    <div class="game-card-platforms">
+                        ${platforms.map(platform => `<span class="platform-tag">${platform}</span>`).join('')}
+                    </div>
+                    <div class="game-card-footer">
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <span>${game.rating || 'N/A'}</span>
+                        </div>
+                        <button class="add-to-calendar-btn" data-id="${game.id}">
+                            <i class="far fa-calendar-plus"></i>
+                            Add to Calendar
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add click event to open modal
+            card.addEventListener('click', (e) => {
+                // Don't open modal if clicking the calendar button
+                if (!e.target.closest('.add-to-calendar-btn')) {
+                    openGameModal(game.id);
+                }
+            });
+            
+            // Add calendar button event
+            const calendarBtn = card.querySelector('.add-to-calendar-btn');
+            calendarBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                addToCalendar(game);
+            });
+            
+            return card;
+        }
+        
+        // Filter games based on search input
+        function filterGames() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            if (searchTerm === '') {
+                currentFilteredGames = [...allGames];
+            } else {
+                currentFilteredGames = allGames.filter(game => 
+                    game.name.toLowerCase().includes(searchTerm) ||
+                    (game.genres && game.genres.some(genre => 
+                        genre.name.toLowerCase().includes(searchTerm)
+                    ))
+                );
+            }
+            
+            displayGames(currentFilteredGames);
+        }
+        
+        // Open game modal with details
+        async function openGameModal(gameId) {
+            try {
+                // Find the game in our data
+                const game = allGames.find(g => g.id === gameId);
+                
+                if (!game) {
+                    console.error('Game not found:', gameId);
+                    return;
+                }
+                
+                // Format release date
+                const releaseDate = game.released ? new Date(game.released).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }) : 'TBA';
+                
+                // Update modal with game data
+                modalImage.src = game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80';
+                modalImage.alt = game.name;
+                modalTitle.textContent = game.name;
+                modalDate.textContent = releaseDate;
+                
+                // Set rating
+                if (game.rating) {
+                    modalRating.innerHTML = `<i class="fas fa-star"></i><span>${game.rating}/5</span>`;
+                } else {
+                    modalRating.innerHTML = '<span>Rating: N/A</span>';
+                }
+                
+                // Set genres
+                modalGenres.innerHTML = '';
+                if (game.genres && game.genres.length > 0) {
+                    game.genres.slice(0, 5).forEach(genre => {
+                        const genreTag = document.createElement('span');
+                        genreTag.className = 'genre-tag';
+                        genreTag.textContent = genre.name;
+                        modalGenres.appendChild(genreTag);
+                    });
+                }
+                
+                // Set description (strip HTML tags if present)
+                let description = game.description || 'No description available.';
+                description = description.replace(/<[^>]*>/g, '');
+                modalDescription.textContent = description.length > 500 ? 
+                    description.substring(0, 500) + '...' : description;
+                
+                // Set platforms
+                modalPlatforms.innerHTML = '';
+                if (game.platforms && game.platforms.length > 0) {
+                    game.platforms.slice(0, 5).forEach(platform => {
+                        const platformTag = document.createElement('span');
+                        platformTag.className = 'platform-tag';
+                        platformTag.textContent = platform.platform.name;
+                        modalPlatforms.appendChild(platformTag);
+                    });
+                }
+                
+                // Set extra info
+                modalExtraInfo.innerHTML = '';
+                const extraInfo = [
+                    { label: 'Metacritic Score', value: game.metacritic ? `${game.metacritic}/100` : 'N/A' },
+                    { label: 'Playtime', value: game.playtime ? `${game.playtime} hours` : 'N/A' },
+                    { label: 'Developers', value: game.developers ? game.developers.map(d => d.name).join(', ') : 'N/A' },
+                    { label: 'Publishers', value: game.publishers ? game.publishers.map(p => p.name).join(', ') : 'N/A' }
+                ];
+                
+                extraInfo.forEach(info => {
+                    const infoItem = document.createElement('div');
+                    infoItem.className = 'info-item';
+                    infoItem.innerHTML = `
+                        <h4>${info.label}</h4>
+                        <p>${info.value}</p>
+                    `;
+                    modalExtraInfo.appendChild(infoItem);
+                });
+                
+                // Set up calendar button
+                modalCalendarBtn.onclick = () => addToCalendar(game);
+                
+                // Try to fetch trailer if available
+                await fetchTrailer(gameId);
+                
+                // Show modal
+                gameModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+            } catch (error) {
+                console.error('Error opening game modal:', error);
+            }
+        }
+        
+        // Fetch trailer for a game
+        async function fetchTrailer(gameId) {
+            try {
+                const response = await fetch(`${API_URL}/${gameId}/movies?key=${API_KEY}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Trailer API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.results && data.results.length > 0) {
+                    // Use the first trailer
+                    const trailer = data.results[0];
+                    trailerContainer.innerHTML = `
+                        <iframe 
+                            width="100%" 
+                            height="300" 
+                            src="https://www.youtube.com/embed/${trailer.data.max}" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen
+                            style="border-radius: var(--radius);"
+                        ></iframe>
+                    `;
+                } else {
+                    // No trailer available
+                    trailerContainer.innerHTML = `
+                        <div class="trailer-placeholder">
+                            <i class="fas fa-film"></i>
+                            <p>Trailer not available for this game</p>
+                        </div>
+                    `;
+                }
+                
+            } catch (error) {
+                console.error('Error fetching trailer:', error);
+                trailerContainer.innerHTML = `
+                    <div class="trailer-placeholder">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Unable to load trailer</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Close modal
+        function closeModal() {
+            gameModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Add game to calendar using ICS
+        function addToCalendar(game) {
+            try {
+                // Format date for ICS
+                const releaseDate = game.released ? new Date(game.released) : new Date();
+                const year = releaseDate.getFullYear();
+                const month = String(releaseDate.getMonth() + 1).padStart(2, '0');
+                const day = String(releaseDate.getDate()).padStart(2, '0');
+                
+                // Create event data
+                const event = {
+                    title: `${game.name} Release`,
+                    description: `Release of ${game.name}. ${game.description ? game.description.replace(/<[^>]*>/g, '') : ''}`,
+                    location: 'Worldwide',
+                    start: [year, month, day, 0, 0],
+                    end: [year, month, day, 23, 59],
+                    url: `https://rawg.io/games/${game.slug || game.id}`,
+                    status: 'CONFIRMED',
+                    busyStatus: 'FREE'
+                };
+                
+                // Generate and download ICS file
+                const filename = `${game.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_release.ics`;
+                
+                // Using ics.js library to create the calendar event
+                ics.createEvent(
+                    event.title,
+                    event.description,
+                    event.location,
+                    event.start,
+                    event.end,
+                    function(value) {
+                        if (value.error) {
+                            console.error('Error creating calendar event:', value.error);
+                            alert('Failed to create calendar event. Please try again.');
+                            return;
+                        }
+                        
+                        // Create and trigger download
+                        const blob = new Blob([value], { type: 'text/calendar' });
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = filename;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                        
+                        // Show confirmation
+                        showNotification(`${game.name} added to your calendar!`);
+                    }
+                );
+                
+            } catch (error) {
+                console.error('Error adding to calendar:', error);
+                alert('Failed to add to calendar. Please try again.');
+            }
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div style="
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background-color: var(--primary);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: var(--radius);
+                    box-shadow: var(--shadow-lg);
+                    z-index: 2000;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    animation: slideIn 0.3s ease;
+                ">
+                    <i class="fas fa-check-circle"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            // Add CSS for animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease forwards';
+                
+                // Add slideOut animation
+                const slideOutStyle = document.createElement('style');
+                slideOutStyle.textContent = `
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(slideOutStyle);
+                
+                setTimeout(() => {
+                    notification.remove();
+                    document.head.removeChild(style);
+                    document.head.removeChild(slideOutStyle);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
