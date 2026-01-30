@@ -124,8 +124,61 @@
         .games-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 28px;
+            gap: 24px;
             margin-bottom: 40px;
+        }
+
+        /* Mobile view: 2 tiles side by side */
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            
+            .game-card {
+                min-height: 280px;
+            }
+            
+            .game-card-image {
+                height: 140px;
+            }
+            
+            .game-card-title {
+                font-size: 1rem;
+            }
+            
+            .game-card-date {
+                font-size: 0.8rem;
+            }
+            
+            .platform-tag {
+                font-size: 0.7rem;
+                padding: 3px 8px;
+            }
+            
+            .add-to-calendar-btn {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
         }
 
         .game-card {
@@ -138,6 +191,7 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .game-card:hover {
@@ -149,21 +203,26 @@
             height: 200px;
             width: 100%;
             object-fit: cover;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .game-card-content {
-            padding: 20px;
+            padding: 16px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
 
         .game-card-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 8px;
             color: var(--dark);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
         }
 
         .game-card-date {
@@ -180,6 +239,7 @@
             flex-wrap: wrap;
             gap: 8px;
             margin-bottom: 16px;
+            margin-top: auto;
         }
 
         .platform-tag {
@@ -192,10 +252,10 @@
         }
 
         .game-card-footer {
-            margin-top: auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-top: 10px;
         }
 
         .rating {
@@ -488,64 +548,68 @@
             color: var(--gray-300);
         }
 
-        /* Responsive */
-        @media (max-width: 992px) {
-            .games-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-            
-            .search-box input {
-                width: 250px;
-            }
+        /* Calendar download link */
+        .calendar-download-link {
+            display: none;
         }
 
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 20px;
-            }
-            
-            .search-box input {
-                width: 100%;
-            }
-            
-            .controls {
-                width: 100%;
-            }
-            
-            .modal-content {
-                padding: 20px;
-            }
-            
-            .modal-title {
-                font-size: 1.8rem;
-            }
-            
-            .modal-header {
-                height: 250px;
-            }
-            
-            .footer-content {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: slideIn 0.3s ease;
+            max-width: 350px;
         }
 
-        @media (max-width: 576px) {
-            .games-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-extra-info {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-actions {
-                flex-direction: column;
-                gap: 20px;
-                align-items: flex-start;
-            }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            background-color: var(--gray-100);
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--gray-200);
+        }
+
+        .filter-btn.active:hover {
+            background-color: var(--secondary);
         }
     </style>
 </head>
@@ -572,6 +636,15 @@
     <main class="container">
         <div class="games-container">
             <h1 class="section-title">Upcoming Game Releases</h1>
+            
+            <!-- Filters -->
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">All Games</button>
+                <button class="filter-btn" data-filter="pc">PC</button>
+                <button class="filter-btn" data-filter="playstation">PlayStation</button>
+                <button class="filter-btn" data-filter="xbox">Xbox</button>
+                <button class="filter-btn" data-filter="switch">Switch</button>
+            </div>
             
             <!-- Loading State -->
             <div id="loading" class="loading">
@@ -636,6 +709,9 @@
         </div>
     </div>
 
+    <!-- Calendar Download Link (Hidden) -->
+    <a id="calendarDownloadLink" class="calendar-download-link" download="game-release.ics"></a>
+
     <!-- Footer -->
     <footer>
         <div class="container">
@@ -645,15 +721,12 @@
                     <span>GameRelease Calendar</span>
                 </div>
                 <div class="api-notice">
-                    <p>Game data powered by RAWG Video Games Database API. This app uses your browser's local storage to remember your preferences.</p>
+                    <p>Game data powered by RAWG Video Games Database API. Calendar events are generated locally in your browser.</p>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- ICS Library -->
-    <script src="https://cdn.jsdelivr.net/npm/ics@2.31.0/ics.min.js"></script>
-    
     <script>
         // API Configuration
         const API_KEY = '92fa0a5736bd445b99e7ed2ac15e63a7';
@@ -662,6 +735,8 @@
         // State management
         let allGames = [];
         let currentFilteredGames = [];
+        let currentPlatformFilter = 'all';
+        let searchTimeout = null;
         
         // DOM Elements
         const gamesGrid = document.getElementById('gamesGrid');
@@ -680,17 +755,42 @@
         const modalCalendarBtn = document.getElementById('modalCalendarBtn');
         const modalExtraInfo = document.getElementById('modalExtraInfo');
         const trailerContainer = document.getElementById('trailerContainer');
+        const calendarDownloadLink = document.getElementById('calendarDownloadLink');
+        const filterButtons = document.querySelectorAll('.filter-btn');
         
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
-            fetchGames();
+            fetchUpcomingGames();
             setupEventListeners();
         });
         
         // Set up event listeners
         function setupEventListeners() {
-            // Search functionality
-            searchInput.addEventListener('input', filterGames);
+            // Search functionality with debounce
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm.length >= 2) {
+                        searchGames(searchTerm);
+                    } else if (searchTerm.length === 0) {
+                        fetchUpcomingGames();
+                    }
+                }, 500);
+            });
+            
+            // Filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Apply filter
+                    currentPlatformFilter = this.dataset.filter;
+                    applyFilters();
+                });
+            });
             
             // Modal close
             modalClose.addEventListener('click', closeModal);
@@ -704,8 +804,8 @@
             });
         }
         
-        // Fetch games from RAWG API
-        async function fetchGames() {
+        // Fetch upcoming games from RAWG API
+        async function fetchUpcomingGames() {
             try {
                 // Show loading state
                 loading.style.display = 'flex';
@@ -740,21 +840,89 @@
                 console.error('Error fetching games:', error);
                 loading.style.display = 'none';
                 
+                // Show error state with sample data
+                showSampleData();
+            }
+        }
+        
+        // Search games from RAWG API
+        async function searchGames(searchTerm) {
+            try {
+                // Show loading state
+                loading.style.display = 'flex';
+                gamesGrid.innerHTML = '';
+                
+                // Fetch games with search term
+                const response = await fetch(
+                    `${API_URL}?key=${API_KEY}&search=${encodeURIComponent(searchTerm)}&page_size=40`
+                );
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allGames = data.results;
+                currentFilteredGames = [...allGames];
+                
+                // Hide loading state
+                loading.style.display = 'none';
+                
+                // Display games
+                displayGames(currentFilteredGames);
+                
+                // If no results, show empty state
+                if (currentFilteredGames.length === 0) {
+                    showNotification('No games found. Try a different search term.');
+                }
+                
+            } catch (error) {
+                console.error('Error searching games:', error);
+                loading.style.display = 'none';
+                
                 // Show error state
                 gamesGrid.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-exclamation-triangle"></i>
-                        <h2>Failed to load games</h2>
+                        <h2>Search failed</h2>
                         <p>Please check your connection and try again.</p>
-                        <button id="retryButton" class="add-to-calendar-btn" style="margin-top: 20px;">
-                            Retry
-                        </button>
                     </div>
                 `;
-                
-                // Add retry functionality
-                document.getElementById('retryButton')?.addEventListener('click', fetchGames);
             }
+        }
+        
+        // Apply platform filters
+        function applyFilters() {
+            if (currentPlatformFilter === 'all') {
+                currentFilteredGames = [...allGames];
+            } else {
+                currentFilteredGames = allGames.filter(game => {
+                    if (!game.platforms) return false;
+                    
+                    const platformNames = game.platforms.map(p => p.platform.name.toLowerCase());
+                    
+                    switch(currentPlatformFilter) {
+                        case 'pc':
+                            return platformNames.some(name => 
+                                name.includes('pc') || name.includes('windows') || name.includes('mac') || name.includes('linux')
+                            );
+                        case 'playstation':
+                            return platformNames.some(name => 
+                                name.includes('playstation') || name.includes('ps4') || name.includes('ps5')
+                            );
+                        case 'xbox':
+                            return platformNames.some(name => 
+                                name.includes('xbox') || name.includes('xbox one') || name.includes('xbox series')
+                            );
+                        case 'switch':
+                            return platformNames.some(name => name.includes('switch') || name.includes('nintendo'));
+                        default:
+                            return true;
+                    }
+                });
+            }
+            
+            displayGames(currentFilteredGames);
         }
         
         // Display games in the grid
@@ -783,17 +951,26 @@
             // Format release date
             const releaseDate = game.released ? new Date(game.released).toLocaleDateString('en-US', {
                 year: 'numeric',
-                month: 'long',
+                month: 'short',
                 day: 'numeric'
             }) : 'TBA';
             
-            // Get platforms
+            // Get platforms (simplified for mobile)
             const platforms = game.platforms ? 
-                game.platforms.map(p => p.platform.name).slice(0, 3) : [];
+                game.platforms.map(p => {
+                    const name = p.platform.name;
+                    // Simplify platform names for mobile
+                    if (name.includes('PlayStation')) return 'PS';
+                    if (name.includes('Xbox')) return 'Xbox';
+                    if (name.includes('Switch')) return 'Switch';
+                    if (name.includes('PC')) return 'PC';
+                    if (name.includes('macOS')) return 'Mac';
+                    return name.substring(0, 8);
+                }).slice(0, 3) : [];
             
             // Create card HTML
             card.innerHTML = `
-                <img class="game-card-image" src="${game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'}" alt="${game.name}">
+                <img class="game-card-image" src="${game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'}" alt="${game.name}" loading="lazy">
                 <div class="game-card-content">
                     <h3 class="game-card-title">${game.name}</h3>
                     <div class="game-card-date">
@@ -806,11 +983,11 @@
                     <div class="game-card-footer">
                         <div class="rating">
                             <i class="fas fa-star"></i>
-                            <span>${game.rating || 'N/A'}</span>
+                            <span>${game.rating ? game.rating.toFixed(1) : 'N/A'}</span>
                         </div>
                         <button class="add-to-calendar-btn" data-id="${game.id}">
                             <i class="far fa-calendar-plus"></i>
-                            Add to Calendar
+                            Add
                         </button>
                     </div>
                 </div>
@@ -820,7 +997,7 @@
             card.addEventListener('click', (e) => {
                 // Don't open modal if clicking the calendar button
                 if (!e.target.closest('.add-to-calendar-btn')) {
-                    openGameModal(game.id);
+                    openGameModal(game);
                 }
             });
             
@@ -834,35 +1011,9 @@
             return card;
         }
         
-        // Filter games based on search input
-        function filterGames() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            
-            if (searchTerm === '') {
-                currentFilteredGames = [...allGames];
-            } else {
-                currentFilteredGames = allGames.filter(game => 
-                    game.name.toLowerCase().includes(searchTerm) ||
-                    (game.genres && game.genres.some(genre => 
-                        genre.name.toLowerCase().includes(searchTerm)
-                    ))
-                );
-            }
-            
-            displayGames(currentFilteredGames);
-        }
-        
         // Open game modal with details
-        async function openGameModal(gameId) {
+        async function openGameModal(game) {
             try {
-                // Find the game in our data
-                const game = allGames.find(g => g.id === gameId);
-                
-                if (!game) {
-                    console.error('Game not found:', gameId);
-                    return;
-                }
-                
                 // Format release date
                 const releaseDate = game.released ? new Date(game.released).toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -871,14 +1022,14 @@
                 }) : 'TBA';
                 
                 // Update modal with game data
-                modalImage.src = game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80';
+                modalImage.src = game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
                 modalImage.alt = game.name;
                 modalTitle.textContent = game.name;
                 modalDate.textContent = releaseDate;
                 
                 // Set rating
                 if (game.rating) {
-                    modalRating.innerHTML = `<i class="fas fa-star"></i><span>${game.rating}/5</span>`;
+                    modalRating.innerHTML = `<i class="fas fa-star"></i><span>${game.rating.toFixed(1)}/5</span>`;
                 } else {
                     modalRating.innerHTML = '<span>Rating: N/A</span>';
                 }
@@ -916,8 +1067,8 @@
                 const extraInfo = [
                     { label: 'Metacritic Score', value: game.metacritic ? `${game.metacritic}/100` : 'N/A' },
                     { label: 'Playtime', value: game.playtime ? `${game.playtime} hours` : 'N/A' },
-                    { label: 'Developers', value: game.developers ? game.developers.map(d => d.name).join(', ') : 'N/A' },
-                    { label: 'Publishers', value: game.publishers ? game.publishers.map(p => p.name).join(', ') : 'N/A' }
+                    { label: 'Release Date', value: releaseDate },
+                    { label: 'ESRB Rating', value: game.esrb_rating ? game.esrb_rating.name : 'N/A' }
                 ];
                 
                 extraInfo.forEach(info => {
@@ -934,7 +1085,7 @@
                 modalCalendarBtn.onclick = () => addToCalendar(game);
                 
                 // Try to fetch trailer if available
-                await fetchTrailer(gameId);
+                await fetchTrailer(game.id);
                 
                 // Show modal
                 gameModal.classList.add('active');
@@ -942,6 +1093,7 @@
                 
             } catch (error) {
                 console.error('Error opening game modal:', error);
+                showNotification('Error loading game details');
             }
         }
         
@@ -997,64 +1149,70 @@
             document.body.style.overflow = 'auto';
         }
         
-        // Add game to calendar using ICS
+        // SIMPLE CALENDAR IMPLEMENTATION
         function addToCalendar(game) {
             try {
                 // Format date for ICS
                 const releaseDate = game.released ? new Date(game.released) : new Date();
+                
+                // Format date as YYYYMMDD
                 const year = releaseDate.getFullYear();
                 const month = String(releaseDate.getMonth() + 1).padStart(2, '0');
                 const day = String(releaseDate.getDate()).padStart(2, '0');
+                const dateStr = `${year}${month}${day}`;
                 
-                // Create event data
-                const event = {
-                    title: `${game.name} Release`,
-                    description: `Release of ${game.name}. ${game.description ? game.description.replace(/<[^>]*>/g, '') : ''}`,
-                    location: 'Worldwide',
-                    start: [year, month, day, 0, 0],
-                    end: [year, month, day, 23, 59],
-                    url: `https://rawg.io/games/${game.slug || game.id}`,
-                    status: 'CONFIRMED',
-                    busyStatus: 'FREE'
-                };
+                // Create event description
+                const description = `Release of ${game.name}. ${game.description ? game.description.replace(/<[^>]*>/g, '').substring(0, 200) : ''}`;
                 
-                // Generate and download ICS file
-                const filename = `${game.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_release.ics`;
+                // Create ICS content
+                const icsContent = [
+                    'BEGIN:VCALENDAR',
+                    'VERSION:2.0',
+                    'PRODID:-//GameRelease Calendar//EN',
+                    'BEGIN:VEVENT',
+                    `UID:${game.id}@gamereleasecalendar.com`,
+                    `DTSTAMP:${getCurrentDateString()}`,
+                    `DTSTART;VALUE=DATE:${dateStr}`,
+                    `DTEND;VALUE=DATE:${dateStr}`,
+                    `SUMMARY:${game.name} Release`,
+                    `DESCRIPTION:${description}`,
+                    `URL:https://rawg.io/games/${game.slug || game.id}`,
+                    'STATUS:CONFIRMED',
+                    'END:VEVENT',
+                    'END:VCALENDAR'
+                ].join('\r\n');
                 
-                // Using ics.js library to create the calendar event
-                ics.createEvent(
-                    event.title,
-                    event.description,
-                    event.location,
-                    event.start,
-                    event.end,
-                    function(value) {
-                        if (value.error) {
-                            console.error('Error creating calendar event:', value.error);
-                            alert('Failed to create calendar event. Please try again.');
-                            return;
-                        }
-                        
-                        // Create and trigger download
-                        const blob = new Blob([value], { type: 'text/calendar' });
-                        const url = window.URL.createObjectURL(blob);
-                        const a = document.createElement('a');
-                        a.href = url;
-                        a.download = filename;
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        window.URL.revokeObjectURL(url);
-                        
-                        // Show confirmation
-                        showNotification(`${game.name} added to your calendar!`);
-                    }
-                );
+                // Create and trigger download
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                
+                calendarDownloadLink.href = url;
+                calendarDownloadLink.download = `${game.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_release.ics`;
+                calendarDownloadLink.click();
+                
+                // Clean up
+                setTimeout(() => URL.revokeObjectURL(url), 100);
+                
+                // Show confirmation
+                showNotification(`${game.name} added to your calendar!`);
                 
             } catch (error) {
                 console.error('Error adding to calendar:', error);
-                alert('Failed to add to calendar. Please try again.');
+                showNotification('Failed to add to calendar. Please try again.');
             }
+        }
+        
+        // Helper function to get current date in ICS format
+        function getCurrentDateString() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
         }
         
         // Show notification
@@ -1069,35 +1227,9 @@
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.innerHTML = `
-                <div style="
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    background-color: var(--primary);
-                    color: white;
-                    padding: 15px 25px;
-                    border-radius: var(--radius);
-                    box-shadow: var(--shadow-lg);
-                    z-index: 2000;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    animation: slideIn 0.3s ease;
-                ">
-                    <i class="fas fa-check-circle"></i>
-                    <span>${message}</span>
-                </div>
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
             `;
-            
-            // Add CSS for animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-            `;
-            document.head.appendChild(style);
             
             // Add to document
             document.body.appendChild(notification);
@@ -1105,23 +1237,75 @@
             // Remove after 3 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease forwards';
-                
-                // Add slideOut animation
-                const slideOutStyle = document.createElement('style');
-                slideOutStyle.textContent = `
-                    @keyframes slideOut {
-                        from { transform: translateX(0); opacity: 1; }
-                        to { transform: translateX(100%); opacity: 0; }
-                    }
-                `;
-                document.head.appendChild(slideOutStyle);
-                
                 setTimeout(() => {
                     notification.remove();
-                    document.head.removeChild(style);
-                    document.head.removeChild(slideOutStyle);
                 }, 300);
             }, 3000);
+        }
+        
+        // Show sample data if API fails
+        function showSampleData() {
+            const sampleGames = [
+                {
+                    id: 1,
+                    name: "Code Vein 2",
+                    released: "2026-01-30",
+                    background_image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    rating: 4.5,
+                    platforms: [
+                        { platform: { name: "PC" } },
+                        { platform: { name: "PlayStation 5" } }
+                    ],
+                    genres: [{ name: "Action RPG" }, { name: "Souls-like" }],
+                    description: "The sequel to the popular vampire-themed action RPG."
+                },
+                {
+                    id: 2,
+                    name: "Deus Ex Remastered",
+                    released: "2026-02-05",
+                    background_image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    rating: 4.7,
+                    platforms: [
+                        { platform: { name: "PC" } },
+                        { platform: { name: "PlayStation 5" } },
+                        { platform: { name: "Xbox Series X/S" } }
+                    ],
+                    genres: [{ name: "Action RPG" }, { name: "Cyberpunk" }],
+                    description: "A remastered version of the classic cyberpunk RPG."
+                },
+                {
+                    id: 3,
+                    name: "Nioh 3",
+                    released: "2026-02-06",
+                    background_image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    rating: 4.6,
+                    platforms: [
+                        { platform: { name: "PC" } },
+                        { platform: { name: "PlayStation 5" } }
+                    ],
+                    genres: [{ name: "Action" }, { name: "Souls-like" }],
+                    description: "The third installment in the challenging action series."
+                },
+                {
+                    id: 4,
+                    name: "Mewgenics",
+                    released: "2026-02-10",
+                    background_image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                    rating: 4.2,
+                    platforms: [
+                        { platform: { name: "PC" } }
+                    ],
+                    genres: [{ name: "Simulation" }, { name: "Strategy" }],
+                    description: "A cat breeding simulation game from the creators of Super Meat Boy."
+                }
+            ];
+            
+            allGames = sampleGames;
+            currentFilteredGames = [...allGames];
+            loading.style.display = 'none';
+            displayGames(currentFilteredGames);
+            
+            showNotification('Using sample data. API connection failed.');
         }
     </script>
 </body>
