@@ -391,6 +391,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            position: relative;
         }
 
         .add-to-calendar-btn:hover {
@@ -567,6 +568,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            position: relative;
         }
 
         .modal-calendar-btn:hover {
@@ -865,6 +867,218 @@
         body.at-top .modern-header {
             transform: translateY(0);
         }
+
+        /* Debug Panel */
+        .debug-panel {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            border-radius: 12px;
+            padding: 15px;
+            z-index: 9999;
+            max-width: 300px;
+            font-size: 0.8rem;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .debug-panel.active {
+            display: flex;
+        }
+
+        .debug-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .debug-title {
+            font-weight: bold;
+            color: #4CAF50;
+            font-size: 0.9rem;
+        }
+
+        .debug-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .debug-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .debug-label {
+            color: #aaa;
+            min-width: 100px;
+        }
+
+        .debug-value {
+            color: white;
+            word-break: break-all;
+        }
+
+        .debug-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            z-index: 9998;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .debug-btn:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .debug-btn.active {
+            background-color: #4CAF50;
+        }
+
+        /* Calendar download styles */
+        .calendar-download-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .calendar-download-overlay.active {
+            display: flex;
+        }
+
+        .calendar-download-modal {
+            background-color: var(--light);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .calendar-download-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .calendar-download-text {
+            margin-bottom: 25px;
+            color: var(--gray-700);
+            line-height: 1.5;
+        }
+
+        .calendar-download-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .calendar-download-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background-color: var(--gray-100);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .calendar-download-option:hover {
+            background-color: var(--gray-200);
+            transform: translateY(-2px);
+        }
+
+        .calendar-download-option i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            min-width: 24px;
+        }
+
+        .calendar-download-close {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--gray-300);
+            border: none;
+            border-radius: 8px;
+            color: var(--gray-900);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-download-close:hover {
+            background-color: var(--gray-400);
+        }
+
+        /* Loading indicator for calendar */
+        .calendar-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: inherit;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .calendar-loading.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .calendar-loading-spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--gray-300);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
     </style>
 </head>
 <body>
@@ -872,6 +1086,81 @@
     <audio id="clickSound" class="click-sound">
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Debug Button -->
+    <button id="debugBtn" class="debug-btn" title="Toggle Debug Panel">
+        <i class="fas fa-bug"></i>
+    </button>
+
+    <!-- Debug Panel -->
+    <div id="debugPanel" class="debug-panel">
+        <div class="debug-header">
+            <div class="debug-title">Telegram Mini App Debug</div>
+            <button class="debug-close" id="debugClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">Platform:</span>
+            <span id="debugPlatform" class="debug-value">Checking...</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">Theme:</span>
+            <span id="debugTheme" class="debug-value">Checking...</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">Viewport:</span>
+            <span id="debugViewport" class="debug-value">Checking...</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">Games Loaded:</span>
+            <span id="debugGames" class="debug-value">0</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">Cache Status:</span>
+            <span id="debugCache" class="debug-value">Checking...</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">Telegram:</span>
+            <span id="debugTelegram" class="debug-value">Checking...</span>
+        </div>
+        <div class="debug-item">
+            <span class="debug-label">Last Action:</span>
+            <span id="debugLastAction" class="debug-value">None</span>
+        </div>
+    </div>
+
+    <!-- Calendar Download Overlay -->
+    <div id="calendarDownloadOverlay" class="calendar-download-overlay">
+        <div class="calendar-download-modal">
+            <h3 class="calendar-download-title">Add to Calendar</h3>
+            <p class="calendar-download-text">Choose how you want to add this game release to your calendar:</p>
+            <div class="calendar-download-options">
+                <div class="calendar-download-option" data-method="download">
+                    <i class="fas fa-download"></i>
+                    <div>
+                        <strong>Download ICS File</strong>
+                        <div style="font-size: 0.85rem; color: var(--gray-700);">Works with Google Calendar, Outlook, Apple Calendar</div>
+                    </div>
+                </div>
+                <div class="calendar-download-option" data-method="google">
+                    <i class="fab fa-google"></i>
+                    <div>
+                        <strong>Add to Google Calendar</strong>
+                        <div style="font-size: 0.85rem; color: var(--gray-700);">Open Google Calendar in browser</div>
+                    </div>
+                </div>
+                <div class="calendar-download-option" data-method="outlook">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <strong>Add to Outlook Calendar</strong>
+                        <div style="font-size: 0.85rem; color: var(--gray-700);">Open Outlook Calendar in browser</div>
+                    </div>
+                </div>
+            </div>
+            <button class="calendar-download-close" id="calendarDownloadClose">Cancel</button>
+        </div>
+    </div>
 
     <!-- Modern Header -->
     <header class="modern-header">
@@ -988,6 +1277,9 @@
                 <div class="modal-actions">
                     <div>
                         <button id="modalCalendarBtn" class="modal-calendar-btn">
+                            <div class="calendar-loading" id="modalCalendarLoading">
+                                <div class="calendar-loading-spinner"></div>
+                            </div>
                             <i class="far fa-calendar-plus"></i>
                             Add to Calendar
                         </button>
@@ -1020,6 +1312,7 @@
 
     <!-- Calendar Download Link (Hidden) -->
     <a id="calendarDownloadLink" class="click-sound" download="game-release.ics"></a>
+    <iframe id="calendarIframe" style="display:none;"></iframe>
 
     <script>
         // Telegram WebApp object
@@ -1028,6 +1321,12 @@
         // API Configuration
         const API_KEY = '92fa0a5736bd445b99e7ed2ac15e63a7';
         const API_URL = 'https://api.rawg.io/api/games';
+        
+        // Calendar Service URLs
+        const CALENDAR_SERVICES = {
+            google: 'https://calendar.google.com/calendar/render?action=TEMPLATE',
+            outlook: 'https://outlook.live.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent'
+        };
         
         // State management
         let allGames = [];
@@ -1038,6 +1337,8 @@
         let hasJoinedChannel = false;
         let lastScrollPosition = 0;
         let scrollDirection = 'none';
+        let debugMode = false;
+        let currentGameForCalendar = null;
         
         // DOM Elements
         const gamesGrid = document.getElementById('gamesGrid');
@@ -1054,15 +1355,30 @@
         const modalDescription = document.getElementById('modalDescription');
         const modalPlatforms = document.getElementById('modalPlatforms');
         const modalCalendarBtn = document.getElementById('modalCalendarBtn');
+        const modalCalendarLoading = document.getElementById('modalCalendarLoading');
         const modalExtraInfo = document.getElementById('modalExtraInfo');
         const trailerContainer = document.getElementById('trailerContainer');
         const calendarDownloadLink = document.getElementById('calendarDownloadLink');
+        const calendarIframe = document.getElementById('calendarIframe');
         const filterButtons = document.querySelectorAll('.filter-btn');
         const tgJoinBtn = document.getElementById('tgJoinBtn');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const clickSound = document.getElementById('clickSound');
         const iosToggleOptions = document.querySelectorAll('.ios-toggle-option');
         const header = document.querySelector('.modern-header');
+        const debugBtn = document.getElementById('debugBtn');
+        const debugPanel = document.getElementById('debugPanel');
+        const debugClose = document.getElementById('debugClose');
+        const debugPlatform = document.getElementById('debugPlatform');
+        const debugTheme = document.getElementById('debugTheme');
+        const debugViewport = document.getElementById('debugViewport');
+        const debugGames = document.getElementById('debugGames');
+        const debugCache = document.getElementById('debugCache');
+        const debugTelegram = document.getElementById('debugTelegram');
+        const debugLastAction = document.getElementById('debugLastAction');
+        const calendarDownloadOverlay = document.getElementById('calendarDownloadOverlay');
+        const calendarDownloadClose = document.getElementById('calendarDownloadClose');
+        const calendarDownloadOptions = document.querySelectorAll('.calendar-download-option');
         
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -1072,6 +1388,14 @@
             setupScrollHandler();
             fetchUpcomingGames();
             applyTheme();
+            updateDebugPanel();
+            
+            // Check for debug mode in URL
+            if (window.location.search.includes('debug=true')) {
+                debugMode = true;
+                debugPanel.classList.add('active');
+                debugBtn.classList.add('active');
+            }
         });
         
         // Initialize Telegram WebApp
@@ -1090,16 +1414,32 @@
                 fullscreenBtn.addEventListener('click', () => {
                     tg.requestFullscreen();
                     triggerHapticFeedback('medium');
+                    logDebugAction('Requested fullscreen');
                 });
                 
                 // Show the fullscreen button
                 fullscreenBtn.style.display = 'flex';
                 
-                console.log('Telegram WebApp initialized');
+                logDebugAction('Telegram WebApp initialized');
+                
+                // Update debug panel
+                debugTelegram.textContent = 'Available';
+                
+                // Log Telegram info to console
+                console.log('Telegram WebApp Info:', {
+                    platform: tg.platform,
+                    colorScheme: tg.colorScheme,
+                    viewportHeight: tg.viewportHeight,
+                    viewportStableHeight: tg.viewportStableHeight,
+                    initData: tg.initData,
+                    initDataUnsafe: tg.initDataUnsafe
+                });
+                
             } else {
                 console.log('Telegram WebApp not detected - running in browser mode');
                 // Hide fullscreen button if not in Telegram
                 fullscreenBtn.style.display = 'none';
+                debugTelegram.textContent = 'Not available';
             }
         }
         
@@ -1112,6 +1452,9 @@
                     // Update CSS variables for dark theme
                     document.documentElement.style.setProperty('--light', '#0f0f0f');
                     document.documentElement.style.setProperty('--dark', '#ffffff');
+                    debugTheme.textContent = 'Dark';
+                } else {
+                    debugTheme.textContent = 'Light';
                 }
                 
                 // Set background and text colors from Telegram
@@ -1154,12 +1497,14 @@
                     const searchTerm = searchInput.value.trim();
                     if (searchTerm.length >= 2) {
                         searchGames(searchTerm);
+                        logDebugAction(`Search: ${searchTerm}`);
                     } else if (searchTerm.length === 0) {
                         if (currentView === 'new-releases') {
                             fetchUpcomingGames();
                         } else {
                             fetchPopularGames();
                         }
+                        logDebugAction('Cleared search');
                     }
                 }, 500);
                 
@@ -1191,6 +1536,7 @@
                     // Apply filter
                     currentPlatformFilter = this.dataset.filter;
                     applyFilters();
+                    logDebugAction(`Filter: ${currentPlatformFilter}`);
                 });
             });
             
@@ -1214,6 +1560,8 @@
                     } else {
                         fetchPopularGames();
                     }
+                    
+                    logDebugAction(`View: ${currentView}`);
                 });
             });
             
@@ -1234,6 +1582,7 @@
                 
                 // Show notification
                 showNotification('Thanks for joining our channel!');
+                logDebugAction('Joined Telegram channel');
             });
             
             // Modal close
@@ -1251,12 +1600,43 @@
             
             // Escape key to close modal
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') closeModal();
+                if (e.key === 'Escape') {
+                    closeModal();
+                    calendarDownloadOverlay.classList.remove('active');
+                }
             });
             
             // Fullscreen button
             fullscreenBtn.addEventListener('click', function() {
                 triggerHapticFeedback('medium');
+            });
+            
+            // Debug button
+            debugBtn.addEventListener('click', function() {
+                debugMode = !debugMode;
+                debugPanel.classList.toggle('active');
+                this.classList.toggle('active');
+                triggerHapticFeedback('light');
+                logDebugAction(`Debug mode: ${debugMode ? 'ON' : 'OFF'}`);
+            });
+            
+            debugClose.addEventListener('click', function() {
+                debugPanel.classList.remove('active');
+                debugBtn.classList.remove('active');
+                debugMode = false;
+            });
+            
+            // Calendar download options
+            calendarDownloadOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const method = this.dataset.method;
+                    handleCalendarDownload(method);
+                    calendarDownloadOverlay.classList.remove('active');
+                });
+            });
+            
+            calendarDownloadClose.addEventListener('click', function() {
+                calendarDownloadOverlay.classList.remove('active');
             });
         }
         
@@ -1299,6 +1679,9 @@
             
             // Update last scroll position
             lastScrollPosition = currentScrollPosition;
+            
+            // Update debug panel
+            debugViewport.textContent = `${window.innerWidth}x${window.innerHeight}, Scroll: ${Math.round(currentScrollPosition)}`;
         }
         
         // Trigger haptic feedback
@@ -1335,6 +1718,32 @@
             }
         }
         
+        // Log debug action
+        function logDebugAction(action) {
+            debugLastAction.textContent = action;
+            console.log(`[DEBUG] ${action}`);
+        }
+        
+        // Update debug panel
+        function updateDebugPanel() {
+            // Platform
+            const platform = navigator.platform || 'Unknown';
+            const userAgent = navigator.userAgent || '';
+            debugPlatform.textContent = platform;
+            
+            // Viewport
+            debugViewport.textContent = `${window.innerWidth}x${window.innerHeight}`;
+            
+            // Cache status
+            const cacheStatus = localStorage.getItem('cachedUpcomingGames') ? 'Available' : 'Empty';
+            debugCache.textContent = cacheStatus;
+            
+            // Update periodically
+            setInterval(() => {
+                debugGames.textContent = allGames.length;
+            }, 2000);
+        }
+        
         // Fetch upcoming games from RAWG API
         async function fetchUpcomingGames() {
             try {
@@ -1356,6 +1765,7 @@
                     currentFilteredGames = [...allGames];
                     loading.style.display = 'none';
                     displayGames(currentFilteredGames);
+                    logDebugAction(`Loaded ${allGames.length} games from cache`);
                     return;
                 }
                 
@@ -1388,6 +1798,8 @@
                 // Display games
                 displayGames(currentFilteredGames);
                 
+                logDebugAction(`Fetched ${allGames.length} upcoming games from API`);
+                
             } catch (error) {
                 console.error('Error fetching games:', error);
                 loading.style.display = 'none';
@@ -1402,6 +1814,7 @@
                         currentFilteredGames = [...allGames];
                         displayGames(currentFilteredGames);
                         showNotification('Using cached data. Check your connection.');
+                        logDebugAction('Using cached data (API failed)');
                         return;
                     } catch (e) {
                         console.error('Error parsing cached data:', e);
@@ -1410,6 +1823,7 @@
                 
                 // Show error state with sample data
                 showSampleData();
+                logDebugAction('API failed, using sample data');
             }
         }
         
@@ -1459,6 +1873,8 @@
                 
                 // Display games
                 displayGames(currentFilteredGames);
+                
+                logDebugAction(`Fetched ${allGames.length} popular games from API`);
                 
             } catch (error) {
                 console.error('Error fetching popular games:', error);
@@ -1514,6 +1930,8 @@
                 if (currentFilteredGames.length === 0) {
                     showNotification('No games found. Try a different search term.');
                 }
+                
+                logDebugAction(`Searched for "${searchTerm}", found ${allGames.length} games`);
                 
             } catch (error) {
                 console.error('Error searching games:', error);
@@ -1625,6 +2043,9 @@
                             <span>${game.rating ? game.rating.toFixed(1) : 'N/A'}</span>
                         </div>
                         <button class="add-to-calendar-btn" data-id="${game.id}">
+                            <div class="calendar-loading">
+                                <div class="calendar-loading-spinner"></div>
+                            </div>
                             <i class="far fa-calendar-plus"></i>
                             Add
                         </button>
@@ -1654,6 +2075,8 @@
             
             // Add calendar button event
             const calendarBtn = card.querySelector('.add-to-calendar-btn');
+            const calendarLoading = calendarBtn.querySelector('.calendar-loading');
+            
             calendarBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 
@@ -1663,10 +2086,235 @@
                 // Play click sound
                 playClickSound();
                 
-                addToCalendar(game);
+                // Show loading
+                calendarLoading.classList.add('active');
+                
+                // Store current game
+                currentGameForCalendar = game;
+                
+                // Show calendar options overlay
+                setTimeout(() => {
+                    calendarLoading.classList.remove('active');
+                    calendarDownloadOverlay.classList.add('active');
+                }, 300);
             });
             
             return card;
+        }
+        
+        // Handle calendar download
+        function handleCalendarDownload(method) {
+            if (!currentGameForCalendar) return;
+            
+            logDebugAction(`Calendar download: ${method} for ${currentGameForCalendar.name}`);
+            
+            switch(method) {
+                case 'download':
+                    downloadICSFile(currentGameForCalendar);
+                    break;
+                case 'google':
+                    openGoogleCalendar(currentGameForCalendar);
+                    break;
+                case 'outlook':
+                    openOutlookCalendar(currentGameForCalendar);
+                    break;
+            }
+        }
+        
+        // Download ICS file with multiple fallbacks
+        function downloadICSFile(game) {
+            try {
+                // Show loading on modal button
+                modalCalendarLoading.classList.add('active');
+                
+                // Create ICS content using GitHub-hosted approach as primary
+                const icsContent = generateICSContent(game);
+                
+                // Method 1: Try GitHub-based approach (most reliable)
+                const githubMethod = () => {
+                    // Encode the ICS content for URL
+                    const encodedContent = encodeURIComponent(icsContent);
+                    
+                    // Use a data URI with a workaround for iOS
+                    const dataUri = `data:text/calendar;charset=utf-8,${encodedContent}`;
+                    
+                    // Create a temporary link
+                    const link = document.createElement('a');
+                    link.href = dataUri;
+                    link.download = `${game.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_release.ics`;
+                    link.style.display = 'none';
+                    
+                    // Special handling for iOS
+                    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+                        // iOS requires a different approach
+                        window.open(dataUri, '_blank');
+                        setTimeout(() => {
+                            modalCalendarLoading.classList.remove('active');
+                            showNotification('Opening calendar file...');
+                            triggerHapticFeedback('success');
+                        }, 500);
+                    } else {
+                        // Standard download for other platforms
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        
+                        setTimeout(() => {
+                            modalCalendarLoading.classList.remove('active');
+                            showNotification(`${game.name} added to calendar!`);
+                            triggerHapticFeedback('success');
+                        }, 500);
+                    }
+                };
+                
+                // Method 2: Fallback to blob approach
+                const blobMethod = () => {
+                    try {
+                        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                        const url = URL.createObjectURL(blob);
+                        
+                        // Create and trigger download
+                        calendarDownloadLink.href = url;
+                        calendarDownloadLink.download = `${game.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_release.ics`;
+                        calendarDownloadLink.click();
+                        
+                        // Clean up
+                        setTimeout(() => URL.revokeObjectURL(url), 100);
+                        
+                        setTimeout(() => {
+                            modalCalendarLoading.classList.remove('active');
+                            showNotification(`${game.name} added to calendar!`);
+                            triggerHapticFeedback('success');
+                        }, 500);
+                    } catch (error) {
+                        console.error('Blob method failed:', error);
+                        // Fallback to iframe method
+                        iframeMethod();
+                    }
+                };
+                
+                // Method 3: Iframe method as last resort
+                const iframeMethod = () => {
+                    try {
+                        const blob = new Blob([icsContent], { type: 'text/calendar' });
+                        const url = URL.createObjectURL(blob);
+                        
+                        calendarIframe.src = url;
+                        
+                        setTimeout(() => {
+                            modalCalendarLoading.classList.remove('active');
+                            showNotification('Calendar file ready. Check your downloads.');
+                            triggerHapticFeedback('success');
+                        }, 1000);
+                    } catch (error) {
+                        console.error('All download methods failed:', error);
+                        modalCalendarLoading.classList.remove('active');
+                        showNotification('Failed to download. Try Google Calendar option.');
+                        triggerHapticFeedback('error');
+                    }
+                };
+                
+                // Try methods in sequence
+                try {
+                    githubMethod();
+                } catch (error) {
+                    console.log('GitHub method failed, trying blob method:', error);
+                    blobMethod();
+                }
+                
+            } catch (error) {
+                console.error('Calendar download failed:', error);
+                modalCalendarLoading.classList.remove('active');
+                showNotification('Failed to add to calendar. Please try again.');
+                triggerHapticFeedback('error');
+            }
+        }
+        
+        // Generate ICS content
+        function generateICSContent(game) {
+            const releaseDate = game.released ? new Date(game.released) : new Date();
+            
+            // Format dates
+            const year = releaseDate.getFullYear();
+            const month = String(releaseDate.getMonth() + 1).padStart(2, '0');
+            const day = String(releaseDate.getDate()).padStart(2, '0');
+            const dateStr = `${year}${month}${day}`;
+            
+            // Current time for timestamp
+            const now = new Date();
+            const stampYear = now.getFullYear();
+            const stampMonth = String(now.getMonth() + 1).padStart(2, '0');
+            const stampDay = String(now.getDate()).padStart(2, '0');
+            const stampHours = String(now.getHours()).padStart(2, '0');
+            const stampMinutes = String(now.getMinutes()).padStart(2, '0');
+            const stampSeconds = String(now.getSeconds()).padStart(2, '0');
+            const timestamp = `${stampYear}${stampMonth}${stampDay}T${stampHours}${stampMinutes}${stampSeconds}Z`;
+            
+            // Create event description
+            const description = `Release of ${game.name}. ${game.description ? game.description.replace(/<[^>]*>/g, '').substring(0, 200) : ''}`;
+            
+            // Create ICS content
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//GameRelease Calendar//EN',
+                'CALSCALE:GREGORIAN',
+                'METHOD:PUBLISH',
+                'BEGIN:VEVENT',
+                `UID:${Date.now()}-${game.id}@gamerelease.hosm4n`,
+                `DTSTAMP:${timestamp}`,
+                `DTSTART;VALUE=DATE:${dateStr}`,
+                `DTEND;VALUE=DATE:${dateStr}`,
+                `SUMMARY:${game.name} - Release Date`,
+                `DESCRIPTION:${description.replace(/\n/g, '\\n')}`,
+                `URL:https://rawg.io/games/${game.slug || game.id}`,
+                'STATUS:CONFIRMED',
+                'TRANSP:TRANSPARENT',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\r\n');
+            
+            return icsContent;
+        }
+        
+        // Open Google Calendar
+        function openGoogleCalendar(game) {
+            const releaseDate = game.released ? new Date(game.released) : new Date();
+            const year = releaseDate.getFullYear();
+            const month = String(releaseDate.getMonth() + 1).padStart(2, '0');
+            const day = String(releaseDate.getDate()).padStart(2, '0');
+            
+            const dates = `${year}${month}${day}/${year}${month}${day}`;
+            const text = encodeURIComponent(`${game.name} - Release Date`);
+            const details = encodeURIComponent(`Release of ${game.name}. Check https://rawg.io/games/${game.slug || game.id} for more details.`);
+            
+            const url = `${CALENDAR_SERVICES.google}&text=${text}&dates=${dates}&details=${details}&location=Worldwide&sprop=name:GameRelease%20Calendar&sprop=website:https://t.me/HosmanReviews`;
+            
+            window.open(url, '_blank');
+            showNotification('Opening Google Calendar...');
+            triggerHapticFeedback('success');
+            logDebugAction('Opened Google Calendar');
+        }
+        
+        // Open Outlook Calendar
+        function openOutlookCalendar(game) {
+            const releaseDate = game.released ? new Date(game.released) : new Date();
+            const year = releaseDate.getFullYear();
+            const month = releaseDate.getMonth() + 1;
+            const day = releaseDate.getDate();
+            
+            const startDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T00:00:00`;
+            const endDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T23:59:59`;
+            
+            const subject = encodeURIComponent(`${game.name} - Release Date`);
+            const body = encodeURIComponent(`Release of ${game.name}.\n\nMore info: https://rawg.io/games/${game.slug || game.id}\n\nFrom GameRelease Calendar by @hosm4n`);
+            
+            const url = `${CALENDAR_SERVICES.outlook}&startdt=${startDate}&enddt=${endDate}&subject=${subject}&body=${body}&location=Worldwide`;
+            
+            window.open(url, '_blank');
+            showNotification('Opening Outlook Calendar...');
+            triggerHapticFeedback('success');
+            logDebugAction('Opened Outlook Calendar');
         }
         
         // Open game modal with details
@@ -1742,7 +2390,8 @@
                 // Set up calendar button
                 modalCalendarBtn.onclick = () => {
                     triggerHapticFeedback('medium');
-                    addToCalendar(game);
+                    currentGameForCalendar = game;
+                    calendarDownloadOverlay.classList.add('active');
                 };
                 
                 // Try to fetch trailer if available
@@ -1751,6 +2400,8 @@
                 // Show modal
                 gameModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
+                
+                logDebugAction(`Opened modal for ${game.name}`);
                 
             } catch (error) {
                 console.error('Error opening game modal:', error);
@@ -1832,76 +2483,6 @@
             document.body.style.overflow = 'auto';
         }
         
-        // Simple calendar implementation
-        function addToCalendar(game) {
-            try {
-                // Format date for ICS
-                const releaseDate = game.released ? new Date(game.released) : new Date();
-                
-                // Format date as YYYYMMDD
-                const year = releaseDate.getFullYear();
-                const month = String(releaseDate.getMonth() + 1).padStart(2, '0');
-                const day = String(releaseDate.getDate()).padStart(2, '0');
-                const dateStr = `${year}${month}${day}`;
-                
-                // Create event description
-                const description = `Release of ${game.name}. ${game.description ? game.description.replace(/<[^>]*>/g, '').substring(0, 200) : ''}`;
-                
-                // Create ICS content
-                const icsContent = [
-                    'BEGIN:VCALENDAR',
-                    'VERSION:2.0',
-                    'PRODID:-//GameRelease Calendar//EN',
-                    'BEGIN:VEVENT',
-                    `UID:${game.id}@gamereleasecalendar.com`,
-                    `DTSTAMP:${getCurrentDateString()}`,
-                    `DTSTART;VALUE=DATE:${dateStr}`,
-                    `DTEND;VALUE=DATE:${dateStr}`,
-                    `SUMMARY:${game.name} Release`,
-                    `DESCRIPTION:${description}`,
-                    `URL:https://rawg.io/games/${game.slug || game.id}`,
-                    'STATUS:CONFIRMED',
-                    'END:VEVENT',
-                    'END:VCALENDAR'
-                ].join('\r\n');
-                
-                // Create and trigger download
-                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                
-                calendarDownloadLink.href = url;
-                calendarDownloadLink.download = `${game.name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_release.ics`;
-                calendarDownloadLink.click();
-                
-                // Clean up
-                setTimeout(() => URL.revokeObjectURL(url), 100);
-                
-                // Haptic feedback for success
-                triggerHapticFeedback('success');
-                
-                // Show confirmation
-                showNotification(`${game.name} added to your calendar!`);
-                
-            } catch (error) {
-                console.error('Error adding to calendar:', error);
-                triggerHapticFeedback('error');
-                showNotification('Failed to add to calendar. Please try again.');
-            }
-        }
-        
-        // Helper function to get current date in ICS format
-        function getCurrentDateString() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
-        }
-        
         // Show notification
         function showNotification(message) {
             // Remove existing notification
@@ -1946,7 +2527,8 @@
                     genres: [{ name: "Action RPG" }, { name: "Souls-like" }],
                     description: "The sequel to the popular vampire-themed action RPG.",
                     metacritic: 85,
-                    playtime: 40
+                    playtime: 40,
+                    slug: "code-vein-2"
                 },
                 {
                     id: 2,
@@ -1962,7 +2544,8 @@
                     genres: [{ name: "Action RPG" }, { name: "Cyberpunk" }],
                     description: "A remastered version of the classic cyberpunk RPG.",
                     metacritic: 90,
-                    playtime: 35
+                    playtime: 35,
+                    slug: "deus-ex-remastered"
                 },
                 {
                     id: 3,
@@ -1977,7 +2560,8 @@
                     genres: [{ name: "Action" }, { name: "Souls-like" }],
                     description: "The third installment in the challenging action series.",
                     metacritic: 88,
-                    playtime: 50
+                    playtime: 50,
+                    slug: "nioh-3"
                 },
                 {
                     id: 4,
@@ -1991,7 +2575,8 @@
                     genres: [{ name: "Simulation" }, { name: "Strategy" }],
                     description: "A cat breeding simulation game from the creators of Super Meat Boy.",
                     metacritic: 82,
-                    playtime: 30
+                    playtime: 30,
+                    slug: "mewgenics"
                 }
             ];
             
@@ -2002,6 +2587,53 @@
             
             showNotification('Using sample data. API connection failed.');
         }
+        
+        // Debug console commands
+        window.debugCommands = {
+            toggleDebug: () => {
+                debugMode = !debugMode;
+                debugPanel.classList.toggle('active');
+                debugBtn.classList.toggle('active');
+                console.log(`Debug mode: ${debugMode ? 'ON' : 'OFF'}`);
+            },
+            clearCache: () => {
+                localStorage.clear();
+                console.log('Cache cleared');
+                showNotification('Cache cleared');
+                location.reload();
+            },
+            testCalendar: () => {
+                const testGame = {
+                    id: 999,
+                    name: "Test Game",
+                    released: "2024-12-31",
+                    description: "This is a test game for calendar functionality.",
+                    slug: "test-game"
+                };
+                currentGameForCalendar = testGame;
+                calendarDownloadOverlay.classList.add('active');
+                console.log('Calendar test triggered');
+            },
+            showTelegramInfo: () => {
+                if (tg) {
+                    console.log('Telegram WebApp Info:', {
+                        platform: tg.platform,
+                        colorScheme: tg.colorScheme,
+                        viewportHeight: tg.viewportHeight,
+                        initData: tg.initDataUnsafe
+                    });
+                } else {
+                    console.log('Telegram WebApp not available');
+                }
+            }
+        };
+        
+        // Make debug commands accessible
+        console.log('Debug commands available:');
+        console.log('  debugCommands.toggleDebug() - Toggle debug panel');
+        console.log('  debugCommands.clearCache() - Clear all cached data');
+        console.log('  debugCommands.testCalendar() - Test calendar functionality');
+        console.log('  debugCommands.showTelegramInfo() - Show Telegram WebApp info');
     </script>
 </body>
 </html>
