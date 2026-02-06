@@ -527,8 +527,16 @@
             font-size: 1rem;
         }
 
+        .modal-description:empty {
+            display: none;
+        }
+
         .modal-trailer {
             margin-bottom: 24px;
+        }
+
+        .modal-trailer:empty {
+            display: none;
         }
 
         .trailer-placeholder {
@@ -582,6 +590,10 @@
             margin-bottom: 24px;
         }
 
+        .modal-extra-info:empty {
+            display: none;
+        }
+
         .info-item {
             background-color: var(--gray-100);
             padding: 12px;
@@ -598,6 +610,12 @@
             font-weight: 600;
             color: var(--dark);
             font-size: 0.95rem;
+        }
+
+        .info-item p:empty::before {
+            content: "N/A";
+            color: var(--gray-500);
+            font-weight: normal;
         }
 
         /* Loading state */
@@ -828,10 +846,70 @@
             font-size: 1rem;
         }
 
-        /* Hide fullscreen button on mobile */
+        /* Telegram Files Channel Button */
+        .telegram-files-btn {
+            position: fixed;
+            bottom: 150px;
+            right: 20px;
+            background: linear-gradient(135deg, #0088cc, #00a8ff);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 136, 204, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0.9;
+        }
+
+        .telegram-files-btn:hover {
+            opacity: 1;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 25px rgba(0, 136, 204, 0.4);
+        }
+
+        .telegram-files-btn:active {
+            transform: scale(0.95);
+        }
+
+        .telegram-files-tooltip {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--dark);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .telegram-files-btn:hover .telegram-files-tooltip {
+            opacity: 1;
+            right: 65px;
+        }
+
+        /* Hide buttons on mobile */
         @media (max-width: 768px) {
             .fullscreen-btn {
                 display: none;
+            }
+            
+            .telegram-files-btn {
+                bottom: 90px;
+                right: 20px;
             }
             
             .ios-toggle-pill {
@@ -856,6 +934,14 @@
             
             .ios-toggle-option .toggle-icon {
                 margin-right: 4px;
+            }
+            
+            .telegram-files-btn {
+                bottom: 80px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
             }
         }
 
@@ -1087,6 +1173,12 @@
         <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Telegram Files Channel Button -->
+    <button id="telegramFilesBtn" class="telegram-files-btn" title="GTA V Files Channel">
+        <i class="fab fa-telegram-plane"></i>
+        <div class="telegram-files-tooltip">GTA V Files Channel</div>
+    </button>
+
     <!-- Debug Button -->
     <button id="debugBtn" class="debug-btn" title="Toggle Debug Panel">
         <i class="fas fa-bug"></i>
@@ -1267,12 +1359,7 @@
                 
                 <p id="modalDescription" class="modal-description"></p>
                 
-                <div class="modal-trailer">
-                    <div id="trailerContainer" class="trailer-placeholder">
-                        <i class="fas fa-film"></i>
-                        <p>Trailer not available for this game</p>
-                    </div>
-                </div>
+                <div class="modal-trailer" id="modalTrailerContainer"></div>
                 
                 <div class="modal-actions">
                     <div>
@@ -1357,11 +1444,12 @@
         const modalCalendarBtn = document.getElementById('modalCalendarBtn');
         const modalCalendarLoading = document.getElementById('modalCalendarLoading');
         const modalExtraInfo = document.getElementById('modalExtraInfo');
-        const trailerContainer = document.getElementById('trailerContainer');
+        const modalTrailerContainer = document.getElementById('modalTrailerContainer');
         const calendarDownloadLink = document.getElementById('calendarDownloadLink');
         const calendarIframe = document.getElementById('calendarIframe');
         const filterButtons = document.querySelectorAll('.filter-btn');
         const tgJoinBtn = document.getElementById('tgJoinBtn');
+        const telegramFilesBtn = document.getElementById('telegramFilesBtn');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const clickSound = document.getElementById('clickSound');
         const iosToggleOptions = document.querySelectorAll('.ios-toggle-option');
@@ -1583,6 +1671,22 @@
                 // Show notification
                 showNotification('Thanks for joining our channel!');
                 logDebugAction('Joined Telegram channel');
+            });
+            
+            // Telegram Files channel button
+            telegramFilesBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Haptic feedback
+                triggerHapticFeedback('medium');
+                playClickSound();
+                
+                // Open Telegram channel
+                window.open('https://t.me/gta_v_files', '_blank');
+                
+                // Show notification
+                showNotification('Opening GTA V Files channel...');
+                logDebugAction('Opened GTA V Files channel');
             });
             
             // Modal close
@@ -2102,6 +2206,188 @@
             return card;
         }
         
+        // Open game modal with details - MODIFIED: No placeholders for missing info
+        async function openGameModal(game) {
+            try {
+                // Format release date
+                const releaseDate = game.released ? new Date(game.released).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }) : 'TBA';
+                
+                // Update modal with game data
+                modalImage.src = game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
+                modalImage.alt = game.name;
+                modalTitle.textContent = game.name;
+                modalDate.textContent = releaseDate;
+                
+                // Set rating - Only show if available
+                if (game.rating) {
+                    modalRating.innerHTML = `<i class="fas fa-star"></i><span>${game.rating.toFixed(1)}/5</span>`;
+                    modalRating.style.display = 'flex';
+                } else {
+                    modalRating.style.display = 'none';
+                }
+                
+                // Set genres - Only show if available
+                modalGenres.innerHTML = '';
+                if (game.genres && game.genres.length > 0) {
+                    game.genres.slice(0, 5).forEach(genre => {
+                        const genreTag = document.createElement('span');
+                        genreTag.className = 'genre-tag';
+                        genreTag.textContent = genre.name;
+                        modalGenres.appendChild(genreTag);
+                    });
+                    modalGenres.style.display = 'flex';
+                } else {
+                    modalGenres.style.display = 'none';
+                }
+                
+                // Set description - Only show if available
+                let description = game.description || '';
+                description = description.replace(/<[^>]*>/g, '');
+                if (description) {
+                    modalDescription.textContent = description.length > 500 ? 
+                        description.substring(0, 500) + '...' : description;
+                    modalDescription.style.display = 'block';
+                } else {
+                    modalDescription.style.display = 'none';
+                }
+                
+                // Set platforms - Only show if available
+                modalPlatforms.innerHTML = '';
+                if (game.platforms && game.platforms.length > 0) {
+                    game.platforms.slice(0, 5).forEach(platform => {
+                        const platformTag = document.createElement('span');
+                        platformTag.className = 'platform-tag';
+                        platformTag.textContent = platform.platform.name;
+                        modalPlatforms.appendChild(platformTag);
+                    });
+                    modalPlatforms.style.display = 'flex';
+                } else {
+                    modalPlatforms.style.display = 'none';
+                }
+                
+                // Set extra info - Only show items with data
+                modalExtraInfo.innerHTML = '';
+                const extraInfo = [];
+                
+                if (game.metacritic) {
+                    extraInfo.push({ label: 'Metacritic Score', value: `${game.metacritic}/100` });
+                }
+                
+                if (game.playtime) {
+                    extraInfo.push({ label: 'Playtime', value: `${game.playtime} hours` });
+                }
+                
+                // Always show release date
+                extraInfo.push({ label: 'Release Date', value: releaseDate });
+                
+                if (game.esrb_rating && game.esrb_rating.name) {
+                    extraInfo.push({ label: 'ESRB Rating', value: game.esrb_rating.name });
+                }
+                
+                // Only create extra info section if we have data
+                if (extraInfo.length > 0) {
+                    extraInfo.forEach(info => {
+                        const infoItem = document.createElement('div');
+                        infoItem.className = 'info-item';
+                        infoItem.innerHTML = `
+                            <h4>${info.label}</h4>
+                            <p>${info.value}</p>
+                        `;
+                        modalExtraInfo.appendChild(infoItem);
+                    });
+                    modalExtraInfo.style.display = 'grid';
+                } else {
+                    modalExtraInfo.style.display = 'none';
+                }
+                
+                // Clear trailer container
+                modalTrailerContainer.innerHTML = '';
+                modalTrailerContainer.style.display = 'none';
+                
+                // Try to fetch trailer if available
+                await fetchTrailer(game.id);
+                
+                // Set up calendar button
+                modalCalendarBtn.onclick = () => {
+                    triggerHapticFeedback('medium');
+                    currentGameForCalendar = game;
+                    calendarDownloadOverlay.classList.add('active');
+                };
+                
+                // Show modal
+                gameModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                logDebugAction(`Opened modal for ${game.name}`);
+                
+            } catch (error) {
+                console.error('Error opening game modal:', error);
+                showNotification('Error loading game details');
+            }
+        }
+        
+        // Fetch trailer for a game - MODIFIED: Only show if available
+        async function fetchTrailer(gameId) {
+            try {
+                // Check cache first
+                const cacheKey = `trailer_${gameId}`;
+                const cachedTrailer = localStorage.getItem(cacheKey);
+                const cacheTimestamp = localStorage.getItem(`${cacheKey}_timestamp`);
+                const now = Date.now();
+                const oneDay = 24 * 60 * 60 * 1000;
+                
+                if (cachedTrailer && cacheTimestamp && (now - parseInt(cacheTimestamp) < oneDay)) {
+                    // Use cached trailer data
+                    const trailerData = JSON.parse(cachedTrailer);
+                    if (trailerData.results && trailerData.results.length > 0) {
+                        displayTrailer(trailerData.results[0]);
+                        return;
+                    }
+                }
+                
+                const response = await fetch(`${API_URL}/${gameId}/movies?key=${API_KEY}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Trailer API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                // Cache the trailer data
+                localStorage.setItem(cacheKey, JSON.stringify(data));
+                localStorage.setItem(`${cacheKey}_timestamp`, now.toString());
+                
+                if (data.results && data.results.length > 0) {
+                    displayTrailer(data.results[0]);
+                }
+                // No else - don't show anything if no trailer
+                
+            } catch (error) {
+                console.error('Error fetching trailer:', error);
+                // Don't show error message - just don't display trailer
+            }
+        }
+        
+        // Display trailer in modal
+        function displayTrailer(trailer) {
+            modalTrailerContainer.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="250" 
+                    src="https://www.youtube.com/embed/${trailer.data.max}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen
+                    style="border-radius: var(--radius);"
+                ></iframe>
+            `;
+            modalTrailerContainer.style.display = 'block';
+        }
+        
         // Handle calendar download
         function handleCalendarDownload(method) {
             if (!currentGameForCalendar) return;
@@ -2315,166 +2601,6 @@
             showNotification('Opening Outlook Calendar...');
             triggerHapticFeedback('success');
             logDebugAction('Opened Outlook Calendar');
-        }
-        
-        // Open game modal with details
-        async function openGameModal(game) {
-            try {
-                // Format release date
-                const releaseDate = game.released ? new Date(game.released).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                }) : 'TBA';
-                
-                // Update modal with game data
-                modalImage.src = game.background_image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80';
-                modalImage.alt = game.name;
-                modalTitle.textContent = game.name;
-                modalDate.textContent = releaseDate;
-                
-                // Set rating
-                if (game.rating) {
-                    modalRating.innerHTML = `<i class="fas fa-star"></i><span>${game.rating.toFixed(1)}/5</span>`;
-                } else {
-                    modalRating.innerHTML = '<span>Rating: N/A</span>';
-                }
-                
-                // Set genres
-                modalGenres.innerHTML = '';
-                if (game.genres && game.genres.length > 0) {
-                    game.genres.slice(0, 5).forEach(genre => {
-                        const genreTag = document.createElement('span');
-                        genreTag.className = 'genre-tag';
-                        genreTag.textContent = genre.name;
-                        modalGenres.appendChild(genreTag);
-                    });
-                }
-                
-                // Set description (strip HTML tags if present)
-                let description = game.description || 'No description available.';
-                description = description.replace(/<[^>]*>/g, '');
-                modalDescription.textContent = description.length > 500 ? 
-                    description.substring(0, 500) + '...' : description;
-                
-                // Set platforms
-                modalPlatforms.innerHTML = '';
-                if (game.platforms && game.platforms.length > 0) {
-                    game.platforms.slice(0, 5).forEach(platform => {
-                        const platformTag = document.createElement('span');
-                        platformTag.className = 'platform-tag';
-                        platformTag.textContent = platform.platform.name;
-                        modalPlatforms.appendChild(platformTag);
-                    });
-                }
-                
-                // Set extra info
-                modalExtraInfo.innerHTML = '';
-                const extraInfo = [
-                    { label: 'Metacritic Score', value: game.metacritic ? `${game.metacritic}/100` : 'N/A' },
-                    { label: 'Playtime', value: game.playtime ? `${game.playtime} hours` : 'N/A' },
-                    { label: 'Release Date', value: releaseDate },
-                    { label: 'ESRB Rating', value: game.esrb_rating ? game.esrb_rating.name : 'N/A' }
-                ];
-                
-                extraInfo.forEach(info => {
-                    const infoItem = document.createElement('div');
-                    infoItem.className = 'info-item';
-                    infoItem.innerHTML = `
-                        <h4>${info.label}</h4>
-                        <p>${info.value}</p>
-                    `;
-                    modalExtraInfo.appendChild(infoItem);
-                });
-                
-                // Set up calendar button
-                modalCalendarBtn.onclick = () => {
-                    triggerHapticFeedback('medium');
-                    currentGameForCalendar = game;
-                    calendarDownloadOverlay.classList.add('active');
-                };
-                
-                // Try to fetch trailer if available
-                await fetchTrailer(game.id);
-                
-                // Show modal
-                gameModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                
-                logDebugAction(`Opened modal for ${game.name}`);
-                
-            } catch (error) {
-                console.error('Error opening game modal:', error);
-                showNotification('Error loading game details');
-            }
-        }
-        
-        // Fetch trailer for a game
-        async function fetchTrailer(gameId) {
-            try {
-                // Check cache first
-                const cacheKey = `trailer_${gameId}`;
-                const cachedTrailer = localStorage.getItem(cacheKey);
-                const cacheTimestamp = localStorage.getItem(`${cacheKey}_timestamp`);
-                const now = Date.now();
-                const oneDay = 24 * 60 * 60 * 1000;
-                
-                if (cachedTrailer && cacheTimestamp && (now - parseInt(cacheTimestamp) < oneDay)) {
-                    // Use cached trailer data
-                    const trailerData = JSON.parse(cachedTrailer);
-                    if (trailerData.results && trailerData.results.length > 0) {
-                        displayTrailer(trailerData.results[0]);
-                        return;
-                    }
-                }
-                
-                const response = await fetch(`${API_URL}/${gameId}/movies?key=${API_KEY}`);
-                
-                if (!response.ok) {
-                    throw new Error(`Trailer API error: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Cache the trailer data
-                localStorage.setItem(cacheKey, JSON.stringify(data));
-                localStorage.setItem(`${cacheKey}_timestamp`, now.toString());
-                
-                if (data.results && data.results.length > 0) {
-                    displayTrailer(data.results[0]);
-                } else {
-                    showNoTrailerMessage();
-                }
-                
-            } catch (error) {
-                console.error('Error fetching trailer:', error);
-                showNoTrailerMessage();
-            }
-        }
-        
-        // Display trailer in modal
-        function displayTrailer(trailer) {
-            trailerContainer.innerHTML = `
-                <iframe 
-                    width="100%" 
-                    height="250" 
-                    src="https://www.youtube.com/embed/${trailer.data.max}" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen
-                    style="border-radius: var(--radius);"
-                ></iframe>
-            `;
-        }
-        
-        // Show no trailer message
-        function showNoTrailerMessage() {
-            trailerContainer.innerHTML = `
-                <div class="trailer-placeholder">
-                    <i class="fas fa-film"></i>
-                    <p>Trailer not available for this game</p>
-                </div>
-            `;
         }
         
         // Close modal
