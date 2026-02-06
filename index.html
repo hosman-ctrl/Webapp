@@ -764,10 +764,65 @@
             max-width: 400px;
         }
 
-        /* Fullscreen button */
+        /* Telegram Files Channel Button - Moved to higher position */
+        .telegram-files-btn {
+            position: fixed;
+            bottom: 150px;
+            right: 20px;
+            background: linear-gradient(135deg, #0088cc, #00a8ff);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 136, 204, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0.9;
+        }
+
+        .telegram-files-btn:hover {
+            opacity: 1;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 6px 25px rgba(0, 136, 204, 0.4);
+        }
+
+        .telegram-files-btn:active {
+            transform: scale(0.95);
+        }
+
+        .telegram-files-tooltip {
+            position: absolute;
+            right: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--dark);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .telegram-files-btn:hover .telegram-files-tooltip {
+            opacity: 1;
+            right: 65px;
+        }
+
+        /* Fullscreen button - Moved LOWER than Telegram button */
         .fullscreen-btn {
             position: fixed;
-            bottom: 90px;
+            bottom: 90px; /* Changed from 150px to 90px to be below Telegram button */
             right: 20px;
             background-color: var(--primary);
             color: white;
@@ -846,61 +901,6 @@
             font-size: 1rem;
         }
 
-        /* Telegram Files Channel Button */
-        .telegram-files-btn {
-            position: fixed;
-            bottom: 150px;
-            right: 20px;
-            background: linear-gradient(135deg, #0088cc, #00a8ff);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 136, 204, 0.3);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            opacity: 0.9;
-        }
-
-        .telegram-files-btn:hover {
-            opacity: 1;
-            transform: scale(1.1) rotate(5deg);
-            box-shadow: 0 6px 25px rgba(0, 136, 204, 0.4);
-        }
-
-        .telegram-files-btn:active {
-            transform: scale(0.95);
-        }
-
-        .telegram-files-tooltip {
-            position: absolute;
-            right: 60px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: var(--dark);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .telegram-files-btn:hover .telegram-files-tooltip {
-            opacity: 1;
-            right: 65px;
-        }
-
         /* Hide buttons on mobile */
         @media (max-width: 768px) {
             .fullscreen-btn {
@@ -908,7 +908,7 @@
             }
             
             .telegram-files-btn {
-                bottom: 90px;
+                bottom: 90px; /* Adjusted for mobile */
                 right: 20px;
             }
             
@@ -942,6 +942,10 @@
                 width: 45px;
                 height: 45px;
                 font-size: 1.2rem;
+            }
+            
+            .fullscreen-btn {
+                display: none; /* Already hidden on mobile */
             }
         }
 
@@ -1179,6 +1183,11 @@
         <div class="telegram-files-tooltip">GTA V Files Channel</div>
     </button>
 
+    <!-- Fullscreen Button (for Telegram WebApp) - Now appears BELOW Telegram button -->
+    <button id="fullscreenBtn" class="fullscreen-btn" title="Expand to fullscreen">
+        <i class="fas fa-expand"></i>
+    </button>
+
     <!-- Debug Button -->
     <button id="debugBtn" class="debug-btn" title="Toggle Debug Panel">
         <i class="fas fa-bug"></i>
@@ -1376,11 +1385,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Fullscreen Button (for Telegram WebApp) -->
-    <button id="fullscreenBtn" class="fullscreen-btn" title="Expand to fullscreen">
-        <i class="fas fa-expand"></i>
-    </button>
 
     <!-- Footer -->
     <footer class="footer">
@@ -1689,6 +1693,11 @@
                 logDebugAction('Opened GTA V Files channel');
             });
             
+            // Fullscreen button
+            fullscreenBtn.addEventListener('click', function() {
+                triggerHapticFeedback('medium');
+            });
+            
             // Modal close
             modalClose.addEventListener('click', function() {
                 triggerHapticFeedback('light');
@@ -1708,11 +1717,6 @@
                     closeModal();
                     calendarDownloadOverlay.classList.remove('active');
                 }
-            });
-            
-            // Fullscreen button
-            fullscreenBtn.addEventListener('click', function() {
-                triggerHapticFeedback('medium');
             });
             
             // Debug button
